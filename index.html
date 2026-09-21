@@ -1,0 +1,1523 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HYBEC One</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+[hidden]{display:none!important}
+:root{
+  --bg:#f2f4f3; --surface:#ffffff; --surface2:#f7f9f8; --ink:#161b1a; --ink2:#4b5451;
+  --ink3:#7e8885; --line:#e3e8e6; --line2:#edf1ef;
+  --accent:#0c7268; --accent-2:#0a5f57; --accent-soft:#e2f1ee; --accent-on:#ffffff;
+  --gold:#b3873c; --gold-soft:#f4ead6;
+  --side:#0f1f1c; --side2:#152824; --side-ink:#e7eeec; --side-mut:#8fa39d; --side-line:#22352f;
+  --ok:#0ca30c; --ok-t:#e2f3e2; --ok-ink:#0a6e0a;
+  --warn:#fab219; --warn-t:#fdf0d3; --warn-ink:#7a5405;
+  --serious:#ec835a; --serious-t:#fce8e0; --serious-ink:#8f3f1e;
+  --bad:#d03b3b; --bad-t:#f9e2e2; --bad-ink:#9c2626;
+  --c1:#2a78d6; --c2:#eb6834; --c3:#1baf7a;
+  --ord1:#86b6ef; --ord2:#5598e7; --ord3:#2a78d6; --ord4:#1c5cab; --ord5:#104281;
+  --grid:#e4e3dd; --axis:#c3c2b7; --chart-mut:#898781;
+  --shadow:0 18px 48px rgba(10,24,21,.18);
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d100f; --surface:#161b1a; --surface2:#1b2120; --ink:#eef2f1; --ink2:#b6c0bd;
+    --ink3:#89938f; --line:#262d2b; --line2:#20272521; --line2:#212826;
+    --accent:#2aa79a; --accent-2:#3dbcae; --accent-soft:#11312c; --accent-on:#06211d;
+    --gold:#d2a75f; --gold-soft:#33291454;--gold-soft:#332914;
+    --side:#0c1a17; --side2:#122320; --side-ink:#e7eeec; --side-mut:#849892; --side-line:#1e302b;
+    --ok:#0ca30c; --ok-t:#123312; --ok-ink:#7bd47b;
+    --warn:#fab219; --warn-t:#332a10; --warn-ink:#f4c964;
+    --serious:#ec835a; --serious-t:#361d12; --serious-ink:#f0a284;
+    --bad:#e66767; --bad-t:#391616; --bad-ink:#f09c9c;
+    --c1:#3987e5; --c2:#d95926; --c3:#199e70;
+    --ord1:#9ec5f4; --ord2:#6da7ec; --ord3:#3987e5; --ord4:#256abf; --ord5:#184f95;
+    --grid:#2c2c2a; --axis:#383835; --chart-mut:#898781;
+    --shadow:0 18px 48px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d100f; --surface:#161b1a; --surface2:#1b2120; --ink:#eef2f1; --ink2:#b6c0bd;
+  --ink3:#89938f; --line:#262d2b; --line2:#212826;
+  --accent:#2aa79a; --accent-2:#3dbcae; --accent-soft:#11312c; --accent-on:#06211d;
+  --gold:#d2a75f; --gold-soft:#332914;
+  --side:#0c1a17; --side2:#122320; --side-ink:#e7eeec; --side-mut:#849892; --side-line:#1e302b;
+  --ok:#0ca30c; --ok-t:#123312; --ok-ink:#7bd47b;
+  --warn:#fab219; --warn-t:#332a10; --warn-ink:#f4c964;
+  --serious:#ec835a; --serious-t:#361d12; --serious-ink:#f0a284;
+  --bad:#e66767; --bad-t:#391616; --bad-ink:#f09c9c;
+  --c1:#3987e5; --c2:#d95926; --c3:#199e70;
+  --ord1:#9ec5f4; --ord2:#6da7ec; --ord3:#3987e5; --ord4:#256abf; --ord5:#184f95;
+  --grid:#2c2c2a; --axis:#383835; --chart-mut:#898781;
+  --shadow:0 18px 48px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:14px/1.5 "Instrument Sans","Segoe UI",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92em}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+/* ---------- shell ---------- */
+.app{display:flex;min-height:100dvh}
+#sidebar{
+  width:250px;flex:0 0 250px;background:var(--side);color:var(--side-ink);
+  position:sticky;top:0;height:100dvh;overflow-y:auto;display:flex;flex-direction:column;
+  border-right:1px solid var(--side-line);
+}
+.brand{display:flex;gap:11px;align-items:center;padding:20px 18px 16px}
+.brand .mark{flex:0 0 36px}
+.brand b{font-size:16.5px;letter-spacing:.2px;font-weight:650;display:block;line-height:1.15}
+.brand span{font-size:11px;color:var(--side-mut);letter-spacing:.4px}
+nav{padding:4px 12px 12px;flex:1}
+.ngroup{margin-top:14px}
+.ngroup h6{margin:0 8px 6px;font-size:10.5px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase;color:var(--side-mut)}
+.nitem{
+  display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  padding:8.5px 10px;border:0;background:none;border-radius:9px;color:var(--side-ink);
+  cursor:pointer;font-size:13.5px;font-weight:500;position:relative;
+}
+.nitem svg{width:17px;height:17px;flex:0 0 17px;stroke:var(--side-mut);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nitem:hover{background:var(--side2)}
+.nitem.active{background:rgba(56,178,163,.16);color:#eafaf6}
+.nitem.active svg{stroke:#4cc7b8}
+.nitem.locked{color:var(--side-mut);opacity:.62}
+.nitem .badge{margin-left:auto;background:var(--gold);color:#1c1503;font-size:10.5px;font-weight:700;border-radius:999px;padding:1px 7px}
+.nitem .lock{margin-left:auto;font-size:11px;color:var(--side-mut)}
+.sideUser{border-top:1px solid var(--side-line);padding:14px 16px;display:flex;gap:10px;align-items:center}
+.sideUser .av{width:34px;height:34px;border-radius:50%;background:var(--side2);display:grid;place-items:center;font-size:12px;font-weight:700;color:#eafaf6;border:2px solid var(--gold)}
+.sideUser div b{display:block;font-size:12.5px}
+.sideUser div span{font-size:11px;color:var(--side-mut)}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:40;
+  display:flex;align-items:center;gap:12px;padding:10px clamp(16px,2.4vw,26px);
+  background:color-mix(in srgb, var(--bg) 82%, transparent);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.hamb{display:none;border:1px solid var(--line);background:var(--surface);border-radius:9px;width:36px;height:36px;cursor:pointer;flex:0 0 36px}
+.hamb span{display:block;width:16px;height:2px;background:var(--ink2);margin:3px auto;border-radius:2px}
+.crumb{min-width:0}
+.crumb small{display:block;font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--ink3);font-weight:600}
+.crumb h1{margin:0;font-size:16.5px;font-weight:650;letter-spacing:.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tSearch{position:relative;margin-left:auto;flex:0 1 320px;min-width:0}
+.tSearch input{
+  width:100%;padding:8px 12px 8px 34px;border-radius:10px;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink);font-size:13px;
+}
+.tSearch input::placeholder{color:var(--ink3)}
+.tSearch .sIco{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--ink3);fill:none;stroke-width:2;stroke-linecap:round}
+.tSearch .kbd{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:10.5px;color:var(--ink3);border:1px solid var(--line);border-radius:5px;padding:1px 5px;background:var(--surface2)}
+.sPop{
+  position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--surface);
+  border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;z-index:60;
+}
+.sPop button{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:none;border:0;padding:9px 13px;cursor:pointer;font-size:13px}
+.sPop button:hover{background:var(--surface2)}
+.sPop .sr-t{font-weight:600}
+.sPop .sr-s{color:var(--ink3);font-size:12px;margin-left:auto;white-space:nowrap}
+.roleSel{
+  border:1px solid var(--line);background:var(--surface);border-radius:10px;
+  padding:7.5px 10px;font-size:12.5px;font-weight:600;color:var(--ink2);cursor:pointer;max-width:210px;
+}
+.iconBtn{position:relative;width:36px;height:36px;flex:0 0 36px;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center}
+.iconBtn svg{width:17px;height:17px;stroke:var(--ink2);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.iconBtn .dot{position:absolute;top:-5px;right:-5px;background:var(--bad);color:#fff;font-size:10px;font-weight:700;border-radius:999px;min-width:17px;height:17px;display:grid;place-items:center;padding:0 4px}
+
+.demoStrip{
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+  padding:7px clamp(16px,2.4vw,26px);font-size:12px;color:var(--ink2);
+  background:var(--gold-soft);border-bottom:1px solid var(--line);
+}
+.demoStrip b{color:var(--ink)}
+.demoStrip .pill{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:1px 9px;font-weight:600;font-size:11px;color:var(--gold)}
+.demoStrip a{color:var(--accent);font-weight:600;cursor:pointer;text-decoration:none}
+.demoStrip .x{margin-left:auto;border:0;background:none;cursor:pointer;color:var(--ink3);font-size:15px;line-height:1;padding:2px 6px}
+
+#screen{flex:1;padding:clamp(16px,2.4vw,26px);max-width:1460px;width:100%;margin:0 auto}
+.foot{
+  padding:18px clamp(16px,2.4vw,26px) 26px;border-top:1px solid var(--line);
+  font-size:12px;color:var(--ink3);display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+  max-width:1460px;margin:0 auto;width:100%;
+}
+.foot b{color:var(--ink2)}
+.foot .ed{margin-left:auto;display:flex;gap:8px;align-items:center;color:var(--ink2);font-weight:600}
+
+/* ---------- layout rows / cards ---------- */
+.row{display:grid;gap:16px;margin-bottom:16px}
+.r-hero{grid-template-columns:1.5fr 1fr 1fr 1fr}
+.r-main{grid-template-columns:2.05fr 1fr}
+.r-three{grid-template-columns:1.25fr 1fr 1fr}
+.r-two{grid-template-columns:1fr 1fr}
+.r-23{grid-template-columns:1.6fr 1fr}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 18px 16px;min-width:0}
+.card h3{margin:0 0 2px;font-size:13.5px;font-weight:650;letter-spacing:.1px}
+.card .sub{font-size:12px;color:var(--ink3);margin:0 0 12px}
+.cardHead{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.cardHead .right{margin-left:auto;display:flex;gap:8px;align-items:center}
+.linkBtn{border:0;background:none;color:var(--accent);font-weight:600;font-size:12px;cursor:pointer;padding:2px 4px}
+.hero{background:linear-gradient(140deg,var(--surface) 30%,var(--accent-soft));}
+.hero .hLabel{font-size:12px;color:var(--ink2);font-weight:600}
+.hero .hVal{font-size:44px;font-weight:680;letter-spacing:-.5px;line-height:1.05;margin:6px 0 4px}
+.hero .hVal small{font-size:20px;font-weight:600;color:var(--ink2)}
+.delta{font-size:12px;font-weight:650}
+.delta.up{color:var(--ok-ink)}
+.delta.down{color:var(--bad-ink)}
+.delta span{color:var(--ink3);font-weight:500}
+.tile .tLabel{font-size:12px;color:var(--ink2);font-weight:600}
+.tile .tVal{font-size:24px;font-weight:660;letter-spacing:-.2px;margin:5px 0 2px}
+.tile .tSub{font-size:11.5px;color:var(--ink3)}
+
+/* ---------- chips / meters ---------- */
+.chip{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:650;white-space:nowrap;vertical-align:middle}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;flex:0 0 6px}
+.chip.ok{background:var(--ok-t);color:var(--ok-ink)}
+.chip.warn{background:var(--warn-t);color:var(--warn-ink)}
+.chip.serious{background:var(--serious-t);color:var(--serious-ink)}
+.chip.bad{background:var(--bad-t);color:var(--bad-ink)}
+.chip.info{background:var(--accent-soft);color:var(--accent-2)}
+.chip.mut{background:var(--surface2);color:var(--ink2);border:1px solid var(--line)}
+.chip.mut::before{background:var(--ink3)}
+.rev{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:var(--ink2);background:var(--surface2)}
+.meter{height:6px;border-radius:99px;background:color-mix(in srgb,var(--c1) 18%,var(--surface2));overflow:hidden;min-width:56px}
+.meter i{display:block;height:100%;border-radius:99px;background:var(--c1)}
+.meter.warn{background:color-mix(in srgb,var(--warn) 22%,var(--surface2))}
+.meter.warn i{background:var(--warn)}
+.meter.bad{background:color-mix(in srgb,var(--bad) 20%,var(--surface2))}
+.meter.bad i{background:var(--bad)}
+.avm{width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent-2);display:inline-grid;place-items:center;font-size:10px;font-weight:700;flex:0 0 26px}
+
+/* ---------- tables ---------- */
+.scrollX{overflow-x:auto;margin:0 -18px;padding:0 18px}
+table.tbl{width:100%;border-collapse:collapse;font-size:13px;min-width:560px}
+.tbl th{
+  text-align:left;font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--ink3);
+  font-weight:600;padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap;
+}
+.tbl td{padding:9.5px 10px;border-bottom:1px solid var(--line2);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tbody tr:hover{background:var(--surface2)}
+.tbl .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl th.num{text-align:right}
+.tbl .main-cell b{display:block;font-weight:600}
+.tbl .main-cell span{font-size:11.5px;color:var(--ink3)}
+.tbl tr.click{cursor:pointer}
+.tot td{font-weight:650;border-top:1px solid var(--line);background:var(--surface2)}
+
+/* ---------- buttons ---------- */
+.btn{border:0;background:var(--accent);color:var(--accent-on);font-weight:650;font-size:12.5px;border-radius:9px;padding:7px 14px;cursor:pointer}
+.btn:hover{background:var(--accent-2)}
+.btnGhost{border:1px solid var(--line);background:var(--surface);color:var(--ink2);font-weight:600;font-size:12.5px;border-radius:9px;padding:6.5px 13px;cursor:pointer}
+.btnGhost:hover{background:var(--surface2)}
+.btnGhost.danger{color:var(--bad-ink)}
+.btnSm{padding:4.5px 11px;font-size:12px;border-radius:8px}
+
+/* ---------- subtabs ---------- */
+.subtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.subtabs button{
+  border:1px solid var(--line);background:var(--surface);color:var(--ink2);
+  border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:600;cursor:pointer;
+}
+.subtabs button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* ---------- charts ---------- */
+.chartWrap{position:relative}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--ink2);margin-bottom:6px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.tip{
+  position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);
+  border-radius:10px;box-shadow:var(--shadow);padding:7px 10px;font-size:11.5px;z-index:30;
+  white-space:nowrap;display:none;color:var(--ink2)
+}
+.tip b{color:var(--ink);display:block;margin-bottom:2px;font-size:11px}
+.tip i{display:inline-block;width:8px;height:8px;border-radius:2.5px;margin-right:5px}
+svg.chart{width:100%;height:auto;display:block}
+svg.chart text{font-family:"Instrument Sans","Segoe UI",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.hbars{display:grid;gap:11px;margin-top:4px}
+.hbar{display:grid;grid-template-columns:98px 1fr;gap:10px;align-items:center;font-size:12px}
+.hbar .lb{color:var(--ink2);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbar .trk{display:flex;align-items:center;gap:8px;min-width:0}
+.hbar .bar{height:15px;border-radius:0 4px 4px 0;min-width:3px}
+.hbar .vl{font-size:11.5px;color:var(--ink2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.hbar .vl b{color:var(--ink)}
+.spark{display:block;margin-top:8px}
+
+/* ---------- lists / feeds ---------- */
+.feed{display:flex;flex-direction:column}
+.feedIt{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
+.feedIt:last-child{border-bottom:0}
+.feedIt .when{flex:0 0 78px;color:var(--ink3);font-size:11.5px;padding-top:1px;font-variant-numeric:tabular-nums}
+.feedIt .what b{font-weight:600}
+.feedIt .what span{color:var(--ink3)}
+.alertIt{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
+.alertIt:last-child{border-bottom:0}
+.alertIt .sq{flex:0 0 8px;width:8px;height:8px;border-radius:3px;margin-top:5px}
+.alertIt b{font-weight:600}
+.alertIt .mut{color:var(--ink3);font-size:11.5px}
+
+/* ---------- approvals ---------- */
+.apGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.apCard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px}
+.apCard.done{opacity:.62}
+.apTop{display:flex;gap:8px;align-items:center}
+.apTop .mono{color:var(--ink3)}
+.apCard h4{margin:0;font-size:13.5px;font-weight:650;line-height:1.35}
+.apMeta{font-size:12px;color:var(--ink3)}
+.apVal{font-size:17px;font-weight:660;font-variant-numeric:tabular-nums}
+.apBtns{display:flex;gap:8px;margin-top:4px;align-items:center;flex-wrap:wrap}
+.apNote{font-size:11.5px;color:var(--ink3);font-style:italic}
+
+/* ---------- timeline (revisions) ---------- */
+.tl{position:relative;margin:6px 0 0;padding-left:20px}
+.tl::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:var(--line);border-radius:2px}
+.tlIt{position:relative;padding:0 0 16px}
+.tlIt::before{content:"";position:absolute;left:-19px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--ink3);box-shadow:0 0 0 2px var(--surface)}
+.tlIt.cur::before{background:var(--accent);box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent-soft)}
+.tlIt b{font-size:12.5px}
+.tlIt .m{font-size:12px;color:var(--ink2);margin-top:1px}
+.tlIt .d{font-size:11px;color:var(--ink3)}
+
+/* ---------- drawer / modal / toast ---------- */
+.scrim{position:fixed;inset:0;background:rgba(8,15,13,.45);z-index:70;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+#drawer{
+  position:fixed;top:0;right:0;bottom:0;width:min(480px,100vw);background:var(--surface);
+  z-index:80;transform:translateX(102%);transition:transform .28s cubic-bezier(.3,.8,.3,1);
+  box-shadow:var(--shadow);display:flex;flex-direction:column;
+  padding-top:env(safe-area-inset-top,0px);
+}
+#drawer.on{transform:none}
+.dHead{display:flex;align-items:flex-start;gap:10px;padding:18px 20px 12px;border-bottom:1px solid var(--line)}
+.dHead h2{margin:0;font-size:16px;font-weight:660}
+.dHead .mono{color:var(--ink3);font-size:11.5px}
+.dHead .x{margin-left:auto;border:1px solid var(--line);background:var(--surface);border-radius:8px;width:30px;height:30px;cursor:pointer;color:var(--ink2);font-size:14px}
+.dBody{padding:16px 20px 26px;overflow-y:auto;flex:1}
+.dSec{margin-bottom:20px}
+.dSec h5{margin:0 0 8px;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);font-weight:650}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px}
+.kv div small{display:block;font-size:11px;color:var(--ink3)}
+.kv div b{font-weight:600;font-size:13px}
+.modalWrap{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:20px}
+.modal{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);max-width:560px;width:100%;padding:26px 26px 22px;max-height:86dvh;overflow-y:auto}
+.modal h2{margin:0 0 4px;font-size:18px}
+.modal .mut{color:var(--ink3);font-size:12.5px}
+.modal ul{margin:14px 0;padding:0;list-style:none;display:grid;gap:9px}
+.modal li{display:flex;gap:10px;font-size:13px;align-items:flex-start}
+.modal li .tick{color:var(--ok-ink);font-weight:700}
+#toast{
+  position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(16px);
+  background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:12px;font-size:13px;font-weight:600;
+  z-index:100;opacity:0;transition:all .25s;pointer-events:none;box-shadow:var(--shadow);max-width:92vw;text-align:center;
+}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ---------- misc ---------- */
+.permTbl td,.permTbl th{text-align:center}
+.permTbl td:first-child,.permTbl th:first-child{text-align:left}
+.pcell{display:inline-block;font-size:10.5px;font-weight:650;border-radius:6px;padding:2px 8px}
+.p-full{background:var(--accent-soft);color:var(--accent-2)}
+.p-edit{background:var(--surface2);color:var(--ink2);border:1px solid var(--line)}
+.p-view{background:none;color:var(--ink3);border:1px dashed var(--line)}
+.p-none{color:var(--ink3);opacity:.5}
+.vGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.vCard{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--surface2)}
+.vCard h4{margin:0 0 2px;font-size:13.5px}
+.vCard .mut{font-size:11.5px;color:var(--ink3)}
+.vCard .kvline{display:flex;justify-content:space-between;font-size:12px;margin-top:7px}
+.vCard .kvline span{color:var(--ink3)}
+.vCard .kvline b{font-variant-numeric:tabular-nums}
+.bcode{display:inline-block;vertical-align:middle}
+.routes{display:grid;gap:14px}
+.route{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--surface2)}
+.route .rHead{display:flex;gap:10px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.route .rHead b{font-size:13px}
+.route .rHead .mut{font-size:11.5px;color:var(--ink3)}
+.stop{display:flex;gap:10px;padding:6px 0;font-size:12.5px;align-items:baseline}
+.stop .t{flex:0 0 46px;color:var(--ink3);font-variant-numeric:tabular-nums;font-size:11.5px}
+.stop .gps{font-size:10.5px;font-weight:650;color:var(--ok-ink)}
+.stop .pend{font-size:10.5px;color:var(--ink3)}
+.statRow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.statRow .sPill{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:7px 13px;font-size:12px;color:var(--ink3)}
+.statRow .sPill b{color:var(--ink);font-size:13px;font-variant-numeric:tabular-nums}
+.emptyNote{font-size:12px;color:var(--ink3);font-style:italic;padding:8px 0}
+
+/* ---------- responsive ---------- */
+@media (max-width:1180px){
+  .r-hero{grid-template-columns:1fr 1fr}
+  .r-main,.r-23{grid-template-columns:1fr}
+  .r-three{grid-template-columns:1fr 1fr}
+}
+@media (max-width:900px){
+  #sidebar{position:fixed;left:0;top:0;bottom:0;z-index:75;transform:translateX(-103%);transition:transform .25s;height:100dvh}
+  #sidebar.open{transform:none}
+  .hamb{display:block}
+  .tSearch{flex:1 1 150px}
+  .roleSel{max-width:130px}
+  .crumb small{display:none}
+}
+@media (max-width:680px){
+  .r-hero,.r-three,.r-two{grid-template-columns:1fr}
+  .hero .hVal{font-size:36px}
+  .kv{grid-template-columns:1fr}
+  .hbar{grid-template-columns:84px 1fr}
+  #drawer{border-radius:0}
+}
+
+/* ============ premium polish layer ============ */
+body{
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(1100px 520px at 88% -8%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 62%),
+    radial-gradient(820px 420px at -12% 108%, color-mix(in srgb, var(--gold) 6%, transparent), transparent 60%);
+  background-attachment:fixed;
+}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--ink3) 38%,transparent);border-radius:99px;border:3px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:color-mix(in srgb,var(--ink3) 60%,transparent);border:3px solid transparent;background-clip:content-box}
+#sidebar{background:linear-gradient(180deg,var(--side) 0%,color-mix(in srgb,var(--side) 84%,#000 16%) 100%)}
+#sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border:3px solid transparent;background-clip:content-box}
+.brand .mark{filter:drop-shadow(0 2px 8px rgba(179,135,60,.35))}
+.nitem{transition:background-color .18s,color .18s,transform .18s ease}
+.nitem:hover{transform:translateX(2px)}
+.nitem.active{
+  background:linear-gradient(120deg,rgba(76,199,184,.22),rgba(76,199,184,.07));
+  box-shadow:inset 0 0 0 1px rgba(76,199,184,.18);
+}
+.nitem svg{transition:stroke .18s}
+.nitem .badge{box-shadow:0 2px 8px -2px rgba(179,135,60,.6)}
+
+.card,.apCard{
+  border-radius:16px;
+  box-shadow:0 1px 2px rgba(8,18,16,.04),0 14px 34px -22px rgba(8,18,16,.16);
+}
+.vCard,.route{border-radius:14px;transition:transform .22s ease,box-shadow .25s ease,border-color .22s}
+.vCard:hover,.apCard:not(.done):hover{transform:translateY(-2px);box-shadow:0 3px 6px rgba(8,18,16,.05),0 18px 38px -20px rgba(8,18,16,.22);border-color:color-mix(in srgb,var(--accent) 22%,var(--line))}
+.apCard{transition:transform .22s ease,box-shadow .25s ease,border-color .22s,opacity .3s}
+
+.hero{position:relative;overflow:hidden;background:linear-gradient(140deg,var(--surface) 18%,var(--accent-soft) 105%)}
+.hero::after{
+  content:"";position:absolute;top:-56px;right:-48px;width:210px;height:210px;border-radius:50%;
+  background:radial-gradient(circle, color-mix(in srgb,var(--gold) 20%,transparent), transparent 68%);pointer-events:none;
+}
+.hero::before{
+  content:"";position:absolute;inset:0 0 auto 0;height:3px;
+  background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--gold) 70%,var(--accent)) 60%,transparent);
+  opacity:.65;
+}
+.hero .hVal{
+  background:linear-gradient(115deg,var(--ink) 30%,var(--accent-2) 115%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero .hVal small{color:var(--ink2)}
+
+.btn{
+  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 86%,#ffffff 14%),var(--accent-2));
+  box-shadow:0 6px 16px -7px color-mix(in srgb,var(--accent) 60%,transparent);
+  transition:transform .16s ease,box-shadow .22s ease,filter .2s;
+}
+.btn:hover{background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 86%,#ffffff 14%),var(--accent-2));transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 10px 22px -8px color-mix(in srgb,var(--accent) 65%,transparent)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btnGhost{transition:transform .16s ease,border-color .2s,background-color .2s,color .2s}
+.btnGhost:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--accent) 32%,var(--line))}
+.btnGhost:active{transform:scale(.97)}
+.linkBtn{transition:opacity .15s}
+.linkBtn:hover{opacity:.75}
+
+.subtabs button{transition:transform .16s ease,background-color .2s,color .2s,border-color .2s,box-shadow .2s}
+.subtabs button:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--accent) 30%,var(--line))}
+.subtabs button.on{box-shadow:0 5px 14px -6px rgba(8,18,16,.4)}
+.sPill{box-shadow:0 1px 2px rgba(8,18,16,.04);transition:border-color .2s}
+.sPill:hover{border-color:color-mix(in srgb,var(--accent) 25%,var(--line))}
+
+.tbl tbody tr{transition:background-color .16s}
+.tbl tbody tr:hover{background:color-mix(in srgb,var(--accent) 4.5%,var(--surface2))}
+.tbl tr.click:hover{background:color-mix(in srgb,var(--accent) 8%,var(--surface2))}
+
+.tSearch input{background:var(--surface2);transition:box-shadow .2s,border-color .2s,background-color .2s}
+.tSearch input:focus{
+  outline:none;background:var(--surface);
+  border-color:color-mix(in srgb,var(--accent) 45%,var(--line));
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 16%,transparent);
+}
+.tSearch:focus-within .kbd{opacity:0}
+.tSearch .kbd{transition:opacity .2s}
+.roleSel{
+  appearance:none;-webkit-appearance:none;padding-right:27px;
+  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23808a86" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>');
+  background-repeat:no-repeat;background-position:right 9px center;background-size:12px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.roleSel:hover{border-color:color-mix(in srgb,var(--accent) 30%,var(--line))}
+.roleSel:focus{outline:none;border-color:color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 16%,transparent)}
+.iconBtn{transition:transform .16s ease,border-color .2s,background-color .2s}
+.iconBtn:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--accent) 30%,var(--line))}
+.hamb{transition:border-color .2s}
+
+.scrim{backdrop-filter:blur(2.5px)}
+#drawer{border-left:1px solid var(--line);border-radius:20px 0 0 20px}
+#toast{transition:opacity .32s cubic-bezier(.34,1.35,.4,1),transform .32s cubic-bezier(.34,1.35,.4,1)}
+.sPop{animation:popIn .18s cubic-bezier(.22,.8,.36,1)}
+.sPop button{transition:background-color .14s}
+.meter i{transition:width .5s cubic-bezier(.3,.9,.3,1)}
+.chip{box-shadow:inset 0 0 0 1px color-mix(in srgb,currentColor 14%,transparent)}
+.chip.mut{box-shadow:none}
+.avm{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 22%,transparent)}
+.sideUser .av{box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 22%,transparent)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(11px)}}
+@keyframes popIn{from{opacity:0;transform:translateY(-5px) scale(.985)}}
+@keyframes scaleIn{from{opacity:0;transform:translateY(14px) scale(.965)}}
+@keyframes growW{from{width:0}}
+@keyframes growV{from{transform:scaleY(0)}}
+@keyframes arIn{0%{opacity:0}45%{opacity:0}100%{opacity:.12}}
+@keyframes lateFade{0%{opacity:0}72%{opacity:0}100%{opacity:1}}
+@keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--bad) 55%,transparent)}100%{box-shadow:0 0 0 10px transparent}}
+
+@media (prefers-reduced-motion: no-preference){
+  #screen .card,#screen .apCard,#screen .vCard,#screen .route{
+    animation:fadeUp .5s cubic-bezier(.22,.8,.36,1) both;
+    animation-delay:calc(var(--i,0)*45ms);
+  }
+  #screen>.subtabs,#screen>.statRow{animation:fadeUp .38s cubic-bezier(.22,.8,.36,1) both}
+  #drawer .dSec{animation:fadeUp .45s cubic-bezier(.22,.8,.36,1) both}
+  #drawer .dSec:nth-of-type(2){animation-delay:60ms}
+  #drawer .dSec:nth-of-type(3){animation-delay:120ms}
+  #drawer .dSec:nth-of-type(4){animation-delay:180ms}
+  .modal{animation:scaleIn .3s cubic-bezier(.22,.8,.36,1)}
+  .hbar .bar{animation:growW .75s cubic-bezier(.3,.9,.3,1) both}
+  .meter i{animation:growW .8s cubic-bezier(.3,.9,.3,1) .1s both}
+  .vbar{transform-box:fill-box;transform-origin:50% 100%;animation:growV .55s cubic-bezier(.3,.9,.3,1) both}
+  svg .ar{animation:arIn 1.15s ease both}
+  svg .endDot,svg .endLb{animation:lateFade 1.35s ease both}
+  .iconBtn .dot{animation:ping 1.7s ease-out .9s 2}
+}
+</style>
+
+<div class="app">
+  <aside id="sidebar" aria-label="Modules">
+    <div class="brand">
+      <svg class="mark" width="36" height="36" viewBox="0 0 36 36" aria-hidden="true">
+        <defs><linearGradient id="gld" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#d8b26a"/><stop offset="1" stop-color="#9a7228"/>
+        </linearGradient></defs>
+        <path d="M18 2 32 10v16L18 34 4 26V10Z" fill="none" stroke="url(#gld)" stroke-width="2.2"/>
+        <path d="M12.5 11.5v13M23.5 11.5v13M12.5 18h11" stroke="#e9f5f1" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <div><b>HYBEC One</b><span>Unified Operations Platform</span></div>
+    </div>
+    <nav id="nav"></nav>
+    <div class="sideUser" id="sideUser"></div>
+  </aside>
+  <div class="scrim" id="navScrim"></div>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="hamb" id="hambBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <div class="crumb"><small>HYBEC One</small><h1 id="screenTitle">Dashboard</h1></div>
+      <div class="tSearch">
+        <svg class="sIco" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
+        <input id="searchIn" type="search" placeholder="Search orders, SKUs, customers…" autocomplete="off" aria-label="Global search">
+        <span class="kbd">⌘K</span>
+        <div class="sPop" id="sPop" hidden></div>
+      </div>
+      <select class="roleSel" id="roleSel" aria-label="Switch demo role">
+        <option value="md">Mukesh Manshani · MD</option>
+        <option value="sales">Rohit Sawant · Sales Head</option>
+        <option value="accounts">Neha Kulkarni · Accounts</option>
+      </select>
+      <button class="iconBtn" id="bellBtn" aria-label="Pending approvals">
+        <svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6.5 2 6.5H4S6 14 6 9Z"/><path d="M10 19.5a2.2 2.2 0 0 0 4 0"/></svg>
+        <span class="dot" id="bellDot">6</span>
+      </button>
+    </header>
+
+    <div class="demoStrip" id="demoStrip">
+      <span class="pill">Preview build</span>
+      <span>Prepared for <b>HYBEC, Mumbai</b> by <b>Eric’s Designs</b> · Quotation <span class="mono">ED-Q-0006</span> · all records are sample data</span>
+      <a id="aboutLink">About this preview</a>
+      <button class="x" id="stripX" aria-label="Dismiss">×</button>
+    </div>
+
+    <main id="screen" aria-live="polite"></main>
+
+    <footer class="foot">
+      <span><b>HYBEC One</b> · concept preview accompanying quotation ED-Q-0006 · the delivered system is configured to HYBEC’s approved processes, formats and approval hierarchy.</span>
+      <span class="ed">Eric’s Designs — Innovation through every pixel</span>
+    </footer>
+  </div>
+</div>
+
+<aside id="drawer" aria-label="Detail panel">
+  <div class="dHead" id="dHead"></div>
+  <div class="dBody" id="dBody"></div>
+</aside>
+<div class="scrim" id="drawScrim"></div>
+
+<div class="modalWrap" id="aboutModal" hidden>
+  <div class="scrim on" style="z-index:-1" id="aboutScrim"></div>
+  <div class="modal" role="dialog" aria-label="About this preview">
+    <h2>About this preview</h2>
+    <p class="mut">A working visual preview of the platform proposed to HYBEC under quotation <span class="mono">ED-Q-0006</span> (20&nbsp;Sep&nbsp;2026). Every module in the approved scope is represented here with sample data:</p>
+    <ul>
+      <li><span class="tick">✓</span><span><b>Sales process automation</b> — leads with scheduled follow-ups (Google Calendar sync), templated enquiries, quotations with revision history, orders, DMR field tracking with GPS, travel claims.</span></li>
+      <li><span class="tick">✓</span><span><b>Purchase &amp; vendors</b> — indents, vendor allocation, purchase orders, debit notes, vendor advance wallets.</span></li>
+      <li><span class="tick">✓</span><span><b>Stock, warehouse &amp; dispatch</b> — species/size/grade SKUs, multi-level pricing, stock blocking with auto-release, transfers between yards, consignment stock, barcodes, gate passes, transport &amp; e-way bills.</span></li>
+      <li><span class="tick">✓</span><span><b>Customers</b> — credit control, aging, collection automation, advance wallets and support ticketing.</span></li>
+      <li><span class="tick">✓</span><span><b>Accounting, GST &amp; assets</b> — approval-driven vouchers, day book, cashflow planner, tax profiles &amp; extra charges (cutting/planing), GST returns auto-prepared with e-invoice and e-way bill, barcoded asset register.</span></li>
+      <li><span class="tick">✓</span><span><b>HR, payroll &amp; administration</b> — attendance, leave, performance evaluation sheets, payroll runs, email templates with dynamic fields &amp; digital signatures, multi-level roles and full activity logging.</span></li>
+    </ul>
+    <p class="mut">The platform is custom-built for HYBEC and delivered as HYBEC’s own — all 35 users included, with <b>no per-user licence fee and no recurring licence/AMC lock-in</b>.</p>
+    <p class="mut">Try it: switch the role at the top right to see permission-based access change live, open <b>Approvals</b> and action a request, or click a quotation to see its revision trail.</p>
+    <div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="btn" id="aboutClose">Back to the demo</button></div>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
+
+<script>
+'use strict';
+/* ---------------- helpers ---------------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const inr=n=>'₹ '+Math.round(n).toLocaleString('en-IN');
+const lak=n=>{
+  const a=Math.abs(n);
+  if(a>=1e7) return '₹ '+(n/1e7).toFixed(2)+' Cr';
+  if(a>=1e5) return '₹ '+(n/1e5).toFixed(2).replace(/0$/,'')+' L';
+  return inr(n);
+};
+const chip=st=>`<span class="chip ${st[1]}">${esc(st[0])}</span>`;
+const nowStr=()=>{const d=new Date();return 'Today · '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');};
+function barcode(code,h=15){
+  let x=1,b='';
+  for(let i=0;i<code.length;i++){
+    const c=code.charCodeAt(i);
+    b+=`<rect x="${x}" width="${(c%3)+1}" height="${h}" fill="var(--ink)"/>`;x+=(c%3)+2+(c%2);
+    b+=`<rect x="${x}" width="${((c>>2)%2)+1}" height="${h}" fill="var(--ink)"/>`;x+=((c>>2)%2)+2;
+  }
+  return `<svg class="bcode" width="${x+1}" height="${h}" viewBox="0 0 ${x+1} ${h}" aria-hidden="true">${b}</svg>`;
+}
+function spark(data,color,w=132,h=38){
+  const mx=Math.max(...data),mn=Math.min(...data),n=data.length;
+  const pt=data.map((v,i)=>[3+(w-16)*i/(n-1), h-5-(v-mn)/(mx-mn)*(h-12)]);
+  const line=pt.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+  const area=`M${pt[0][0]},${h-3} L`+line.replace(/ /g,' L')+` L${pt[n-1][0]},${h-3} Z`;
+  const e=pt[n-1];
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">
+    <path class="ar" d="${area}" fill="${color}" opacity="0.12"/>
+    <polyline class="ln" points="${line}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle class="endDot" cx="${e[0]}" cy="${e[1]}" r="3.5" fill="${color}" stroke="var(--surface)" stroke-width="2"/></svg>`;
+}
+/* chart registry: id -> config; wired after each render */
+const CHARTS={};
+function lineChart(id,labels,series,ymax,ystep,unit){
+  CHARTS[id]={kind:'line',labels,series,ymax};
+  const W=640,H=250,pl=38,pr=110,pt=16,pb=30,iw=W-pl-pr,ih=H-pt-pb;
+  const X=i=>pl+iw*i/(labels.length-1), Y=v=>pt+ih*(1-v/ymax);
+  let g='';
+  for(let v=0;v<=ymax;v+=ystep){
+    g+=`<line x1="${pl}" y1="${Y(v)}" x2="${W-pr}" y2="${Y(v)}" stroke="${v===0?'var(--axis)':'var(--grid)'}"/>`;
+    g+=`<text x="${pl-7}" y="${Y(v)+3.5}" text-anchor="end" font-size="10" fill="var(--chart-mut)">${v}</text>`;
+  }
+  labels.forEach((lb,i)=>{if(i%2===1)g+=`<text x="${X(i)}" y="${H-9}" text-anchor="middle" font-size="10" fill="var(--chart-mut)">${lb}</text>`;});
+  let p='',ends='';
+  series.forEach((s,si)=>{
+    p+=`<polyline class="ln" points="${s.d.map((v,i)=>X(i).toFixed(1)+','+Y(v).toFixed(1)).join(' ')}" fill="none" stroke="${s.c}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    const li=s.d.length-1;
+    ends+=`<circle class="endDot" cx="${X(li)}" cy="${Y(s.d[li])}" r="4.5" fill="${s.c}" stroke="var(--surface)" stroke-width="2"/>
+      <text class="endLb" x="${X(li)+9}" y="${Y(s.d[li])+3.5}" font-size="10.5" font-weight="600" fill="var(--ink2)">${s.n} ${s.d[li]}</text>`;
+  });
+  const ch=`<g class="chL" style="display:none"><line class="chx" x1="0" x2="0" y1="${pt}" y2="${pt+ih}" stroke="var(--axis)"/>${series.map((s,i)=>`<circle class="chd${i}" r="4" fill="${s.c}" stroke="var(--surface)" stroke-width="2"/>`).join('')}</g>`;
+  return `<div class="chartWrap" id="${id}">
+    <div class="legend">${series.map(s=>`<span><i style="background:${s.c}"></i>${s.n} (${unit})</span>`).join('')}</div>
+    <svg class="chart" viewBox="0 0 ${W} ${H}" data-pl="${pl}" data-iw="${iw}" data-pt="${pt}" data-ih="${ih}" data-w="${W}">${g}${p}${ends}${ch}
+    <rect class="ov" x="${pl}" y="${pt}" width="${iw}" height="${ih}" fill="transparent"/></svg>
+    <div class="tip"></div></div>`;
+}
+function groupBars(id,labels,series,ymax,ystep,unit){
+  CHARTS[id]={kind:'gbar',labels,series,ymax};
+  const W=640,H=250,pl=40,pr=12,pt=16,pb=30,iw=W-pl-pr,ih=H-pt-pb;
+  const gw=iw/labels.length, bw=Math.min(22,(gw-18)/2), Y=v=>pt+ih*(1-v/ymax);
+  let g='';
+  for(let v=0;v<=ymax;v+=ystep){
+    g+=`<line x1="${pl}" y1="${Y(v)}" x2="${W-pr}" y2="${Y(v)}" stroke="${v===0?'var(--axis)':'var(--grid)'}"/>`;
+    g+=`<text x="${pl-7}" y="${Y(v)+3.5}" text-anchor="end" font-size="10" fill="var(--chart-mut)">${v}</text>`;
+  }
+  let bars='';
+  labels.forEach((lb,i)=>{
+    const cx=pl+gw*i+gw/2;
+    g+=`<text x="${cx}" y="${H-9}" text-anchor="middle" font-size="10" fill="var(--chart-mut)">${lb}</text>`;
+    series.forEach((s,si)=>{
+      const x=cx-(series.length*bw+2*(series.length-1))/2+si*(bw+2);
+      const y=Y(s.d[i]),y0=Y(0),r=4;
+      bars+=`<path class="vbar" style="animation-delay:${i*55+si*90}ms" d="M${x},${y0} L${x},${y+r} Q${x},${y} ${x+r},${y} L${x+bw-r},${y} Q${x+bw},${y} ${x+bw},${y+r} L${x+bw},${y0} Z" fill="${s.c}"/>`;
+    });
+    bars+=`<rect class="gv" data-i="${i}" x="${pl+gw*i}" y="${pt}" width="${gw}" height="${ih}" fill="transparent"/>`;
+  });
+  return `<div class="chartWrap" id="${id}">
+    <div class="legend">${series.map(s=>`<span><i style="background:${s.c}"></i>${s.n} (${unit})</span>`).join('')}</div>
+    <svg class="chart" viewBox="0 0 ${W} ${H}" data-w="${W}">${g}${bars}</svg>
+    <div class="tip"></div></div>`;
+}
+function hbars(rows,colors){
+  const mx=Math.max(...rows.map(r=>r.v));
+  return `<div class="hbars">`+rows.map((r,i)=>`<div class="hbar">
+    <span class="lb" title="${esc(r.l)}">${esc(r.l)}</span>
+    <span class="trk"><span class="bar" style="width:${(r.v/mx*100).toFixed(1)}%;background:${colors[i%colors.length]};animation-delay:${i*70}ms"></span>
+    <span class="vl"><b>${r.val}</b>${r.x?` · ${r.x}`:''}</span></span></div>`).join('')+`</div>`;
+}
+const ORD=['var(--ord1)','var(--ord2)','var(--ord3)','var(--ord4)','var(--ord5)'];
+
+/* ---------------- data (sample) ---------------- */
+const DB={
+  weeks:['6 Jul','13 Jul','20 Jul','27 Jul','3 Aug','10 Aug','17 Aug','24 Aug','31 Aug','7 Sep','14 Sep','21 Sep'],
+  invoiced:[14.2,11.8,15.6,13.1,17.4,14.9,16.8,18.2,15.9,19.3,17.6,20.9],
+  collected:[11.5,12.4,13.2,12.8,14.6,13.9,15.2,15.8,14.9,16.4,16.1,18.3],
+  pipeline:[{l:'Enquiry',v:86.4,n:38},{l:'Qualified',v:64.2,n:26},{l:'Quoted',v:58.7,n:19},{l:'Negotiation',v:31.2,n:9},{l:'Won · Sep',v:42.8,n:12}],
+  aging:[{l:'0–30 days',v:18.4},{l:'31–60 days',v:9.6},{l:'61–90 days',v:6.2},{l:'90+ days',v:7.8}],
+  cashM:['Apr','May','Jun','Jul','Aug','Sep'],
+  inflow:[52.4,58.1,61.8,57.2,66.4,71.9], outflow:[47.8,51.2,55.6,49.9,58.7,60.2],
+  leads:[
+    {c:'Supreme Interiors',city:'Mumbai',o:'Kavita Deshmukh',st:['Enquiry','mut'],v:420000,f:'22 Sep · intro call'},
+    {c:'NexGen Developers',city:'Navi Mumbai',o:'Rohit Sawant',st:['Qualified','info'],v:980000,f:'23 Sep · site visit'},
+    {c:'Paramount Estates',city:'Pune',o:'Rohit Sawant',st:['Quoted','info'],v:1240000,f:'24 Sep · follow-up'},
+    {c:'Om Sai Timber Mart',city:'Nashik',o:'Kavita Deshmukh',st:['Negotiation','warn'],v:396750,f:'22 Sep · revised offer'},
+    {c:'CityMart Retail Fitout',city:'Thane',o:'Arjun Mehta',st:['Quoted','info'],v:760000,f:'26 Sep · presentation'},
+    {c:'Roongta Projects',city:'Mumbai',o:'Arjun Mehta',st:['Enquiry','mut'],v:310000,f:'25 Sep · requirements'}],
+  quotes:[
+    {no:'QTN-26-0152',rev:1,cust:'Metro Build Solutions',city:'Thane',v:684200,m:'21.4%',st:['Sent','info'],d:'20 Sep'},
+    {no:'QTN-26-0148',rev:3,cust:'Navkar Infra Projects',city:'Mumbai',v:1245600,m:'18.2%',st:['Approval pending','warn'],d:'19 Sep'},
+    {no:'QTN-26-0147',rev:0,cust:'Shree Balaji Traders',city:'Pune',v:218400,m:'24.8%',st:['Accepted → SO-26-0201','ok'],d:'18 Sep'},
+    {no:'QTN-26-0144',rev:2,cust:'Om Sai Timber Mart',city:'Nashik',v:396750,m:'19.6%',st:['Negotiation','mut'],d:'16 Sep'},
+    {no:'QTN-26-0141',rev:1,cust:'Lotus Interiors',city:'Mumbai',v:872300,m:'22.1%',st:['Sent','info'],d:'14 Sep'},
+    {no:'QTN-26-0139',rev:0,cust:'Ashwamedh Buildcon',city:'Nashik',v:164900,m:'26.2%',st:['Expired','bad'],d:'8 Sep'}],
+  orders:[
+    {no:'SO-26-0201',c:'Shree Balaji Traders',v:218400,f:40,by:'26 Sep',st:['Allocation','info']},
+    {no:'SO-26-0198',c:'Lotus Interiors',v:564800,f:65,by:'24 Sep',st:['Partially dispatched','warn']},
+    {no:'SO-26-0196',c:'Metro Build Solutions',v:312600,f:100,by:'22 Sep',st:['Ready · gate pass pending','warn']},
+    {no:'SO-26-0193',c:'Navkar Infra Projects',v:720000,f:100,by:'18 Sep',st:['Dispatched · POD received','ok']}],
+  field:[
+    {rep:'Rohit Sawant',terr:'Pune territory',km:'64 km logged',stops:[
+      {t:'09:12',p:'Shree Balaji Traders, Bhosari',gps:1,note:'Order discussion · ₹80,000 collected'},
+      {t:'11:40',p:'Paramount Estates site, Hinjewadi',gps:1,note:'Ghana teak 4×3 samples · architect meeting'},
+      {t:'14:05',p:'Om Sai Timber Mart, Nashik Phata',gps:0,note:'Scheduled · revised offer'}]},
+    {rep:'Kavita Deshmukh',terr:'Mumbai city',km:'22 km logged',stops:[
+      {t:'10:05',p:'Supreme Interiors, Andheri E',gps:1,note:'New enquiry · teak door package'},
+      {t:'12:30',p:'Lotus Interiors, Worli',gps:1,note:'Quotation walkthrough'},
+      {t:'15:30',p:'Navkar Infra, BKC office',gps:0,note:'Scheduled · collection follow-up'}]},
+    {rep:'Arjun Mehta',terr:'Thane – Navi Mumbai',km:'31 km logged',stops:[
+      {t:'09:48',p:'CityMart Retail, Ghodbunder Rd',gps:1,note:'Site measurement — ply & laminates'},
+      {t:'13:15',p:'NexGen Developers, Vashi',gps:1,note:'₹60,000 advance collected'}]}],
+  claims:[
+    {no:'TC-0912',e:'Rohit Sawant',p:'Pune territory · 3 days',v:12480,st:['Pending MD approval','warn']},
+    {no:'TC-0911',e:'Kavita Deshmukh',p:'Client visits · Sep W2',v:6240,st:['Approved','ok']},
+    {no:'TC-0909',e:'Arjun Mehta',p:'Thane sites · Sep W1',v:8910,st:['Paid','ok']}],
+  indents:[
+    {no:'IND-0342',item:'Malaysian Sal logs · 40–60 cm girth',dept:'Yard — Mumbai',qty:'290 CFT',st:['PO raised · PO-26-0231','info']},
+    {no:'IND-0341',item:'Ghana Teak sawn · 8×4',dept:'Sales — project order',qty:'600 CFT',st:['Awaiting vendor allocation','warn']},
+    {no:'IND-0339',item:'Corrugated cartons · strapping',dept:'Dispatch',qty:'2,500 pcs',st:['PO raised · PO-26-0229','info']},
+    {no:'IND-0336',item:'Marine plywood 19 mm · 8×4',dept:'Warehouse — Bhiwandi',qty:'400 sheets',st:['Received','ok']}],
+  pos:[
+    {no:'PO-26-0231',v:'Gujarat Timber Imports',val:486500,d:'19 Sep',st:['Pending MD approval','warn']},
+    {no:'PO-26-0229',v:'Shakti Packaging',val:86200,d:'18 Sep',st:['Approved · delivery 24 Sep','info']},
+    {no:'PO-26-0225',v:'Malabar Wood Traders',val:342800,d:'12 Sep',st:['Goods received · QC pending','warn']},
+    {no:'PO-26-0222',v:'Spectrum Polish & Coatings',val:112400,d:'8 Sep',st:['Closed','ok']}],
+  vendors:[
+    {n:'Gujarat Timber Imports',cat:'Logs & sawn timber · Kandla',gst:'24AAECG4821F1Z3',out:620000,wal:0,rate:'A'},
+    {n:'Malabar Wood Traders',cat:'Teak & hardwood · Kochi',gst:'32AABCM9174K1Z8',out:342800,wal:0,rate:'B+'},
+    {n:'Shakti Packaging',cat:'Packaging & strapping',gst:'27AALFS2210Q1Z6',out:52700,wal:45000,rate:'A'},
+    {n:'Vector Logistics',cat:'Transport partner',gst:'27AAHCV6640M1Z1',out:38200,wal:12000,rate:'A−'}],
+  dns:[
+    {no:'DN-0067',v:'Malabar Wood Traders',reason:'Short supply · 38 CFT against PO-26-0225',val:34500,st:['Pending approval','warn']},
+    {no:'DN-0064',v:'Shakti Packaging',reason:'Damaged cartons · GRN 0412',val:8200,st:['Settled','ok']}],
+  skus:[
+    {sku:'HYB-BTK-SWN',p:'Burma Teak — Sawn Sizes',vr:'12 sizes · Grade A/B',unit:'CFT',rt:4850,wh:4390,stk:'1,240 CFT'},
+    {sku:'HYB-GTK-SWN',p:'Ghana Teak — Sawn Sizes',vr:'8 sizes',unit:'CFT',rt:2350,wh:2120,stk:'3,420 CFT'},
+    {sku:'HYB-SAL-LOG',p:'Malaysian Sal — Logs',vr:'3 girth classes',unit:'CFT',rt:1680,wh:1495,stk:'5,160 CFT'},
+    {sku:'HYB-MRP-19',p:'Marine Plywood 19 mm · 8×4',vr:'2 grades',unit:'sheet',rt:3940,wh:3610,stk:'618 sheets',low:'min 800'},
+    {sku:'HYB-PIN-PLK',p:'Pine Planks — Imported',vr:'6 sizes',unit:'CFT',rt:950,wh:840,stk:'7,800 CFT'}],
+  stock:[
+    {sku:'HYB-BTK-SWN',av:'980 CFT',bl:'180 CFT',blref:'SO-26-0198 · auto-release 24 Sep',cons:'80 CFT · Surat yard'},
+    {sku:'HYB-GTK-SWN',av:'2,760 CFT',bl:'480 CFT',blref:'SO-26-0201 · auto-release 26 Sep',cons:'200 CFT · Surat yard'},
+    {sku:'HYB-MRP-19',av:'472 sheets',bl:'146 sheets',blref:'SO-26-0196 · auto-release 22 Sep',cons:'—',low:1},
+    {sku:'HYB-SAL-LOG',av:'4,340 CFT',bl:'640 CFT',blref:'Project hold · auto-release 30 Sep',cons:'180 CFT · Bhiwandi godown'}],
+  transfers:[
+    {no:'TRF-0088',what:'HYB-GTK-SWN · 200 CFT',route:'Surat yard → Mumbai HO yard',st:['In transit · e-way bill EWB-4471','info']},
+    {no:'TRF-0086',what:'HYB-MRP-19 · 120 sheets',route:'Bhiwandi godown → Mumbai HO yard',st:['Received','ok']},
+    {no:'REQ-0104',what:'Recurring · cartons & strapping (monthly)',route:'Shakti Packaging → Mumbai HO yard',st:['Auto-raises 1 Oct','mut']}],
+  dispatches:[
+    {dc:'DC-26-0410',c:'Metro Build Solutions',tr:'Vector Logistics · LR 88213 · EWB-4468',bx:'18 bundles · 240 CFT',gp:['GP-0410 approved','ok']},
+    {dc:'DC-26-0409',c:'Lotus Interiors',tr:'Customer pickup',bx:'6 crates · 96 sheets',gp:['Gate pass pending','warn']},
+    {dc:'DC-26-0408',c:'Shree Balaji Traders',tr:'SafeHaul Roadways · LR 88190 · EWB-4462',bx:'14 bundles · 310 CFT',gp:['Delivered · POD received','ok']}],
+  gps:[
+    {no:'GP-0410',type:'Outward · sales dispatch',ref:'DC-26-0410',by:'Sanjay Gupta · 09:41',st:['Approved','ok']},
+    {no:'GP-0409',type:'Outward · sales dispatch',ref:'DC-26-0409',by:'—',st:['Pending','warn']},
+    {no:'GP-0407',type:'Returnable · band saw blade regrind',ref:'AST-0031',by:'Sanjay Gupta · 20 Sep',st:['Open · due back 25 Sep','info']}],
+  customers:[
+    {n:'Navkar Infra Projects',city:'Mumbai',gst:'27AACCN8814J1Z9',lim:1500000,used:62,out:932400,od:['₹ 3.80 L · 64 days','serious'],wal:0},
+    {n:'Lotus Interiors',city:'Mumbai',gst:'27AABFL5521P1Z4',lim:1000000,used:61,out:610200,od:['Current','ok'],wal:25000},
+    {n:'Metro Build Solutions',city:'Thane',gst:'27AAGCM3318R1Z2',lim:800000,used:55,out:442100,od:['₹ 1.20 L · 38 days','warn'],wal:0},
+    {n:'Om Sai Timber Mart',city:'Nashik',gst:'27AAQFO7743B1Z7',lim:300000,used:92,out:274850,od:['₹ 0.78 L · 96 days · hold','bad'],wal:0},
+    {n:'Shree Balaji Traders',city:'Pune',gst:'27AAWFS1102E1Z5',lim:500000,used:37,out:186300,od:['Current','ok'],wal:160000}],
+  collections:[
+    {t:'23 Sep',w:'Collection visit — Navkar Infra, ₹ 3.80 L promised',k:'var(--serious)'},
+    {t:'25 Sep',w:'PDC due — Metro Build Solutions ₹ 1.20 L (HDFC 004512)',k:'var(--warn)'},
+    {t:'26 Sep',w:'Payment promised — Om Sai Timber Mart ₹ 0.78 L · credit hold until cleared',k:'var(--bad)'},
+    {t:'Today',w:'₹ 1.40 L collected in field — receipts auto-posted to day book',k:'var(--ok)'}],
+  vouchers:[
+    {no:'PV-0871',w:'Payment · Shakti Packaging — ₹ 2,10,000 (due 22 Sep)',st:['Awaiting approval','warn']},
+    {no:'JV-0442',w:'Journal · freight provision — ₹ 18,400',st:['Awaiting approval','warn']},
+    {no:'RV-1183',w:'Receipt · Shree Balaji ₹ 80,000 — field collection, GPS receipt',st:['Posted','ok']}],
+  daybook:[
+    {v:'RV-1183',type:['Receipt','ok'],p:'Shree Balaji Traders — field collection (Rohit Sawant)',dr:'—',cr:'80,000',by:'Auto · GPS receipt'},
+    {v:'PV-0868',type:['Payment','info'],p:'Vector Logistics — freight, week ending 20 Sep',dr:'38,200',cr:'—',by:'Neha Kulkarni'},
+    {v:'JV-0441',type:['Journal','mut'],p:'Depreciation — September provisional',dr:'64,300',cr:'—',by:'System'},
+    {v:'CV-0512',type:['Contra','mut'],p:'Cash deposited — HDFC current account',dr:'—',cr:'1,50,000',by:'Neha Kulkarni'}],
+  ledgers:[
+    {l:'Sales — domestic',g:'Income',bal:'₹ 4.82 Cr',s:'Cr'},
+    {l:'Purchases — timber & panels',g:'Expense',bal:'₹ 2.61 Cr',s:'Dr'},
+    {l:'Import duty & clearing',g:'Direct expense',bal:'₹ 22.40 L',s:'Dr'},
+    {l:'GST payable',g:'Duties & taxes',bal:'₹ 6.84 L',s:'Cr'},
+    {l:'Salaries & wages',g:'Expense',bal:'₹ 1.18 Cr',s:'Dr'},
+    {l:'Freight & cartage',g:'Expense',bal:'₹ 14.60 L',s:'Dr'},
+    {l:'HDFC Bank — current a/c',g:'Bank',bal:'₹ 28.65 L',s:'Dr'}],
+  assets:[
+    {code:'AST-0031',a:'Band Saw 42″ · resaw line',loc:'Processing shed — Mumbai yard',pv:840000,dep:'15%',wdv:607000,nx:'Blade service due 12 Oct'},
+    {code:'AST-0024',a:'Eicher truck · MH-04 KL 3382',loc:'Dispatch yard',pv:685000,dep:'20%',wdv:412000,nx:'Insurance renews 3 Nov'},
+    {code:'AST-0027',a:'Forklift 3 T · Godrej',loc:'Bhiwandi godown',pv:520000,dep:'15%',wdv:398000,nx:'Hydraulic check 28 Sep'}],
+  employees:[
+    {n:'Rohit Sawant',ds:'Sales Head',dept:'Sales',lvl:'L4',doj:'Mar 2019'},
+    {n:'Kavita Deshmukh',ds:'Sr. Sales Executive',dept:'Sales',lvl:'L3',doj:'Jul 2021'},
+    {n:'Prakash Iyer',ds:'Purchase Manager',dept:'Purchase',lvl:'L4',doj:'Jan 2018'},
+    {n:'Neha Kulkarni',ds:'Accounts Manager',dept:'Accounts',lvl:'L4',doj:'Nov 2017'},
+    {n:'Sanjay Gupta',ds:'Yard Supervisor',dept:'Yard & dispatch',lvl:'L3',doj:'Jun 2020'},
+    {n:'Meena Rao',ds:'HR Executive',dept:'Admin & HR',lvl:'L3',doj:'Feb 2022'}],
+  leaves:[
+    {no:'LV-0224',e:'Sneha Patil · Accounts',t:'Casual · 24–26 Sep (3 days) · reliever assigned',st:'pending'},
+    {no:'LV-0221',e:'Arjun Mehta · Sales',t:'Casual · 19 Sep (1 day)',st:'approved'}],
+  payroll:[
+    {e:'Rohit Sawant',dept:'Sales',g:98500,d:11820,n:86680},
+    {e:'Prakash Iyer',dept:'Purchase',g:84200,d:10100,n:74100},
+    {e:'Neha Kulkarni',dept:'Accounts',g:81600,d:9790,n:71810},
+    {e:'Kavita Deshmukh',dept:'Sales',g:56800,d:6820,n:49980},
+    {e:'Sanjay Gupta',dept:'Yard & dispatch',g:52400,d:6290,n:46110}],
+  users:[
+    {n:'Mukesh Manshani',r:'Managing Director',last:'Today · 09:02',tfa:1},
+    {n:'Rohit Sawant',r:'Sales Head',last:'Today · 08:47',tfa:1},
+    {n:'Prakash Iyer',r:'Purchase Manager',last:'Today · 09:15',tfa:1},
+    {n:'Neha Kulkarni',r:'Accounts Manager',last:'Yesterday · 18:22',tfa:1},
+    {n:'Sanjay Gupta',r:'Yard Supervisor',last:'Today · 07:58',tfa:0},
+    {n:'Meena Rao',r:'HR Executive',last:'Yesterday · 17:40',tfa:1}],
+  perms:{
+    cols:['MD','Sales Head','Purchase','Accounts','HR','Warehouse'],
+    rows:[
+      ['Sales','full','full','view','view','none','view'],
+      ['Purchase & vendors','full','view','full','view','none','view'],
+      ['Inventory & dispatch','full','view','edit','none','none','full'],
+      ['Customers & credit','full','edit','none','edit','none','none'],
+      ['Accounting & assets','full','none','none','full','none','none'],
+      ['HR & payroll','full','none','none','view','full','none'],
+      ['Admin & audit','full','none','none','none','edit','none']]},
+  quoteItems:[
+    {sku:'HYB-BTK-SWN',d:'Burma Teak Sawn 8×4 · Grade A',q:'85 CFT',rate:4850,amt:412250},
+    {sku:'HYB-GTK-SWN',d:'Ghana Teak Sawn 6×4',q:'140 CFT',rate:2350,amt:329000},
+    {sku:'HYB-MRP-19',d:'Marine Plywood 19 mm · 8×4',q:'60 sheets',rate:3940,amt:236400},
+    {sku:'HYB-PIN-PLK',d:'Pine Planks 6×1',q:'110 CFT',rate:950,amt:104500}],
+  enquiries:[
+    {no:'ENQ-26-0102',c:'Lotus Interiors',what:'Burma teak doors & frames package',v:920000,rev:1,st:['Quoted · QTN-26-0141','info'],o:'Kavita Deshmukh',d:'13 Sep'},
+    {no:'ENQ-26-0101',c:'CityMart Retail Fitout',what:'Marine ply & laminates — 3 stores',v:760000,rev:0,st:['Open · site visit 26 Sep','mut'],o:'Arjun Mehta',d:'17 Sep'},
+    {no:'ENQ-26-0099',c:'NexGen Developers',what:'Teak flooring · 1,200 sq ft',v:980000,rev:2,st:['Converted → QTN-26-0152','ok'],o:'Rohit Sawant',d:'11 Sep'},
+    {no:'ENQ-26-0097',c:'Ashwamedh Buildcon',what:'Sal logs — shuttering lot',v:310000,rev:0,st:['Lost — price','bad'],o:'Rohit Sawant',d:'6 Sep'}],
+  followups:[
+    {t:'10:30',w:'Call — Paramount Estates · revised rates for teak sawn',o:'Rohit',st:['Done','ok']},
+    {t:'12:00',w:'Visit — Lotus Interiors · door package samples',o:'Kavita',st:['Done','ok']},
+    {t:'15:30',w:'Call — Navkar Infra · collection follow-up ₹ 3.80 L',o:'Rohit',st:['Upcoming','info']},
+    {t:'16:15',w:'Meeting — CityMart · ply requirement list',o:'Arjun',st:['Upcoming','info']},
+    {t:'—',w:'Call — Roongta Projects · first response pending 2 days',o:'Arjun',st:['Overdue','bad']}],
+  gstCal:[
+    {r:'GSTR-1 · September',due:'11 Oct',st:['Auto-prepared · 148 e-invoices','info']},
+    {r:'GSTR-3B · September',due:'20 Oct',st:['ITC matched · ₹ 4.21 L','info']},
+    {r:'GSTR-1 · August',due:'Filed 11 Sep',st:['Filed','ok']},
+    {r:'GSTR-3B · August',due:'Filed 20 Sep',st:['Filed','ok']},
+    {r:'TDS · Q2 (26Q)',due:'31 Oct',st:['Computation ready','mut']}],
+  templates:[
+    {n:'Quotation cover',use:'Sent 64 times in Sep',f:['{customer_name}','{quote_no}','{valid_till}'],sig:1},
+    {n:'Payment reminder — 7 day',use:'Auto-sends on due date',f:['{due_amount}','{invoice_no}','{days_overdue}'],sig:1},
+    {n:'Dispatch intimation',use:'Auto-sends on gate pass approval',f:['{lr_no}','{eway_bill}','{transporter}'],sig:1},
+    {n:'Consignment receipt — Surat yard',use:'Sent 9 times in Sep',f:['{lot_no}','{species}','{cft}'],sig:0}],
+  tickets:[
+    {no:'TKT-0034',c:'Metro Build Solutions',w:'Short bundle in DC-26-0410 — 2 pcs',pr:['High','serious'],st:['Open · assigned Sanjay','warn'],d:'Today'},
+    {no:'TKT-0031',c:'Navkar Infra Projects',w:'Reschedule delivery to 24 Sep',pr:['Normal','mut'],st:['In progress','info'],d:'20 Sep'},
+    {no:'TKT-0033',c:'Om Sai Timber Mart',w:'Invoice copies + HSN summary for GST audit',pr:['Normal','mut'],st:['Resolved in 2.1 hrs','ok'],d:'19 Sep'}],
+  evalSheets:[
+    {n:'Sales weekly scorecard',p:'Calls · visits · conversions · collections · DMR filing',f:'Weekly · 9 employees',by:'Rohit Sawant'},
+    {n:'Yard operations checklist',p:'Dispatch accuracy · stock counts · safety',f:'Monthly · 8 employees',by:'Sanjay Gupta'}],
+  evalScores:[
+    {e:'Rohit Sawant',s:'8.6',d:'+0.4',up:1},{e:'Kavita Deshmukh',s:'8.1',d:'+0.2',up:1},{e:'Arjun Mehta',s:'7.4',d:'−0.3',up:0}],
+  planner:[
+    {d:'22 Sep',w:'Shakti Packaging — vendor payment',v:'− ₹ 2.10 L',out:1},
+    {d:'23 Sep',w:'Navkar Infra — promised collection',v:'+ ₹ 3.80 L'},
+    {d:'25 Sep',w:'Metro Build — PDC clears',v:'+ ₹ 1.20 L'},
+    {d:'28 Sep',w:'Lotus Interiors — invoice due',v:'+ ₹ 2.10 L'},
+    {d:'30 Sep',w:'September payroll',v:'− ₹ 10.42 L',out:1},
+    {d:'1 Oct',w:'Yard rent — Bhiwandi',v:'− ₹ 0.85 L',out:1}],
+  taxProfiles:['GST 18% — on final amount (default)','GST 12% — reduced-rate items','IGST — inter-state supplies (Surat ↔ Mumbai)'],
+  extraCharges:[
+    {n:'Cutting',v:'₹ 18 / CFT',ap:'Before tax · editable'},
+    {n:'Planing',v:'₹ 12 / CFT',ap:'Before tax · editable'},
+    {n:'Loading',v:'₹ 450 / vehicle',ap:'Before tax · fixed'},
+    {n:'Transit insurance',v:'0.5%',ap:'After tax · optional'}],
+  revs0148:[
+    {r:'R3',d:'19 Sep · 16:38',m:'Special discount 8.5% applied — sent for MD approval',v:1245600,cur:1},
+    {r:'R2',d:'16 Sep · 12:10',m:'Delivery changed to 3 lots · freight included in rates',v:1261150},
+    {r:'R1',d:'13 Sep · 17:55',m:'Rates revised on 6 SKUs after client meeting',v:1288900},
+    {r:'R0',d:'11 Sep · 10:22',m:'Created by Rohit Sawant · 32 line items',v:1310400}]
+};
+
+let approvals=[
+  {id:1,type:'Purchase order',k:'warn',ref:'PO-26-0231',t:'PO on Gujarat Timber Imports — Malaysian Sal logs, 290 CFT',m:'Raised by Prakash Iyer · exceeds ₹ 2 L single-PO limit',v:486500,st:'pending'},
+  {id:2,type:'Quotation discount',k:'warn',ref:'QTN-26-0148 · R3',t:'Special discount 8.5% — Navkar Infra Projects',m:'Requested by Rohit Sawant · floor discount is 5%',v:1245600,st:'pending'},
+  {id:3,type:'Payment release',k:'info',ref:'PV-0871',t:'Vendor payment — Shakti Packaging',m:'Due 22 Sep · against PO-26-0229 · 3-way matched',v:210000,st:'pending'},
+  {id:4,type:'Travel claim',k:'info',ref:'TC-0912',t:'Travel claim — Rohit Sawant',m:'Pune territory · 3 days · bills attached',v:12480,st:'pending'},
+  {id:5,type:'Leave request',k:'mut',ref:'LV-0224',t:'Casual leave — Sneha Patil (Accounts)',m:'24–26 Sep · 3 days · reliever assigned',v:0,st:'pending'},
+  {id:6,type:'Debit note',k:'info',ref:'DN-0067',t:'Debit note on Malabar Wood Traders',m:'Short supply · 38 CFT against PO-26-0225',v:34500,st:'pending'}];
+
+let log=[
+  {t:'Today · 09:41',u:'Sanjay Gupta',a:'approved gate pass GP-0410 (DC-26-0410 · Metro Build Solutions)',mod:'Dispatch',ip:'103.86.21.7'},
+  {t:'Today · 09:12',u:'Rohit Sawant',a:'GPS check-in at Shree Balaji Traders, Bhosari — visit started',mod:'Sales · field',ip:'mobile app'},
+  {t:'20 Sep · 18:22',u:'Neha Kulkarni',a:'posted receipt voucher RV-1182 — ₹ 1,50,000 (Metro Build Solutions)',mod:'Accounting',ip:'103.86.21.4'},
+  {t:'19 Sep · 16:38',u:'Rohit Sawant',a:'revised QTN-26-0148 to R3 — discount 8.5%, routed for MD approval',mod:'Sales',ip:'103.86.21.9'},
+  {t:'19 Sep · 11:04',u:'Prakash Iyer',a:'raised PO-26-0231 on Gujarat Timber Imports — ₹ 4,86,500',mod:'Purchase',ip:'103.86.21.5'},
+  {t:'18 Sep · 15:47',u:'Meena Rao',a:'approved leave LV-0221 — Arjun Mehta, 19 Sep',mod:'HR',ip:'103.86.21.6'},
+  {t:'18 Sep · 10:31',u:'System',a:'payment-due alert generated — Om Sai Timber Mart crossed 90 days, credit hold applied',mod:'Customers',ip:'—'}];
+
+const ROLES={
+  md:{name:'Mukesh Manshani',title:'Managing Director',init:'MM',allowed:['dash','approvals','sales','purchase','inventory','customers','accounting','hr','admin']},
+  sales:{name:'Rohit Sawant',title:'Sales Head',init:'RS',allowed:['dash','approvals','sales','customers','inventory']},
+  accounts:{name:'Neha Kulkarni',title:'Accounts Manager',init:'NK',allowed:['dash','approvals','customers','accounting']}
+};
+const NAV=[
+  {g:'Overview',items:[
+    {id:'dash',l:'Dashboard',ic:'<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>'},
+    {id:'approvals',l:'Approvals',badge:1,ic:'<circle cx="12" cy="12" r="8.5"/><path d="m8.5 12.2 2.4 2.4 4.6-4.9"/>'}]},
+  {g:'Operations',items:[
+    {id:'sales',l:'Sales',ic:'<path d="M4 19.5V16m5.3 3.5v-7M14.7 19.5v-4M20 19.5V8.5"/><path d="m4.5 11 4.8-4.2 4 2.8L19.5 4"/>'},
+    {id:'purchase',l:'Purchase',ic:'<path d="M5 7h15l-1.6 8.2a2 2 0 0 1-2 1.6H8.7a2 2 0 0 1-2-1.6L5 4.5H3"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="16.5" cy="20" r="1.4"/>'},
+    {id:'inventory',l:'Inventory & Dispatch',ic:'<path d="M12 3.2 20.5 7v10L12 20.8 3.5 17V7Z"/><path d="M3.5 7 12 11l8.5-4M12 11v9.5"/>'},
+    {id:'customers',l:'Customers',ic:'<circle cx="9" cy="8.5" r="3.5"/><path d="M3.5 19.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M15.5 5.5a3.5 3.5 0 0 1 0 6M17.5 14.7c1.8.7 3 2.1 3 4.8"/>'}]},
+  {g:'Finance & People',items:[
+    {id:'accounting',l:'Accounting & Assets',ic:'<rect x="4.5" y="3.5" width="15" height="17" rx="2"/><path d="M8 7.5h8M8 11.5h3M8 15.5h3M13.5 11.5h2.5M13.5 15.5h2.5"/>'},
+    {id:'hr',l:'HR & Payroll',ic:'<rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16.5c.5-1.7 1.7-2.6 3.2-2.6s2.7.9 3.2 2.6M15 9.5h3.5M15 13h3.5"/>'}]},
+  {g:'Control',items:[
+    {id:'admin',l:'Admin & Audit',ic:'<path d="M12 3.5 19.5 6v5.2c0 4.6-3.1 8-7.5 9.3-4.4-1.3-7.5-4.7-7.5-9.3V6Z"/><path d="m9 11.8 2.2 2.2 3.8-4"/>'}]}];
+
+const state={screen:'dash',role:'md',tabs:{sales:'pipeline',purchase:'indents',inventory:'catalogue',accounting:'overview',hr:'people',admin:'roles'},revTable:false};
+const TITLES={dash:'Dashboard',approvals:'Approvals',sales:'Sales',purchase:'Purchase & Vendors',inventory:'Inventory & Dispatch',customers:'Customers & Credit',accounting:'Accounting & Assets',hr:'HR & Payroll',admin:'Admin & Audit'};
+
+/* ---------------- screens ---------------- */
+const pendCount=()=>approvals.filter(a=>a.st==='pending').length;
+
+function subtabs(screen,tabs){
+  return `<div class="subtabs">`+tabs.map(t=>`<button data-stab="${t[0]}" class="${state.tabs[screen]===t[0]?'on':''}">${t[1]}</button>`).join('')+`</div>`;
+}
+function statRow(items){
+  return `<div class="statRow">`+items.map(i=>`<span class="sPill">${i[0]} <b>${i[1]}</b></span>`).join('')+`</div>`;
+}
+
+function renderDash(){
+  const inv=DB.invoiced, delta=pendCount();
+  const attn=[
+    ['var(--warn)','PO-26-0231 · Gujarat Timber — ₹ 4.86 L','Awaiting MD approval · raised 19 Sep',''],
+    ['var(--warn)','QTN-26-0148 R3 — discount 8.5%','Above 5% floor · needs MD sign-off',''],
+    ['var(--serious)','Navkar Infra — ₹ 3.80 L overdue 64 days','Collection visit planned 23 Sep',''],
+    ['var(--bad)','Om Sai Timber Mart — ₹ 0.78 L at 96 days','Credit hold applied automatically',''],
+    ['var(--warn)','HYB-MRP-19 below reorder level','618 sheets in stock against minimum 800','']];
+  return `
+  <div class="row r-hero">
+    <div class="card hero">
+      <div class="hLabel">Revenue — September, month to date</div>
+      <div class="hVal">₹ 72.4 <small>lakh</small></div>
+      <div class="delta up">▲ 18.2% <span>vs August MTD · invoiced basis</span></div>
+      ${spark(inv,'var(--c1)',150,40)}
+    </div>
+    <div class="card tile"><div class="tLabel">Open sales orders</div><div class="tVal">23</div>
+      <div class="tSub">₹ 1.18 Cr in fulfilment · 3 due this week</div></div>
+    <div class="card tile"><div class="tLabel">Collections overdue</div><div class="tVal">₹ 23.6 L</div>
+      <div class="tSub">4 customers beyond terms · 1 on credit hold</div></div>
+    <div class="card tile"><div class="tLabel">Pending approvals</div><div class="tVal">${delta}</div>
+      <div class="tSub">Average clearance today: 6.2 hours</div></div>
+  </div>
+  <div class="row r-main">
+    <div class="card">
+      <div class="cardHead"><div><h3>Invoiced vs collected</h3><p class="sub">Weekly totals · last 12 weeks · ₹ lakh</p></div>
+        <div class="right"><button class="linkBtn" data-act="revtable">${state.revTable?'View chart':'View as table'}</button></div></div>
+      <div ${state.revTable?'hidden':''}>${lineChart('chRev',DB.weeks,[{n:'Invoiced',c:'var(--c1)',d:DB.invoiced},{n:'Collected',c:'var(--c2)',d:DB.collected}],25,5,'₹ L')}</div>
+      <div ${state.revTable?'':'hidden'} class="scrollX"><table class="tbl"><thead><tr><th>Week ending</th><th class="num">Invoiced (₹ L)</th><th class="num">Collected (₹ L)</th></tr></thead><tbody>
+      ${DB.weeks.map((w,i)=>`<tr><td>${w}</td><td class="num">${DB.invoiced[i].toFixed(1)}</td><td class="num">${DB.collected[i].toFixed(1)}</td></tr>`).join('')}</tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="cardHead"><div><h3>Needs your attention</h3><p class="sub">Exceptions surfaced by workflow rules</p></div></div>
+      ${attn.map(a=>`<div class="alertIt"><span class="sq" style="background:${a[0]}"></span><div><b>${a[1]}</b><div class="mut">${a[2]}</div></div></div>`).join('')}
+      <div style="margin-top:10px"><button class="linkBtn" data-goto="approvals">Open approvals →</button></div>
+    </div>
+  </div>
+  <div class="row r-three">
+    <div class="card">
+      <div class="cardHead"><div><h3>Pipeline by stage</h3><p class="sub">Open value · deal count in labels</p></div></div>
+      ${hbars(DB.pipeline.map(p=>({l:p.l,v:p.v,val:'₹ '+p.v.toFixed(1)+' L',x:p.n+' deals'})),ORD)}
+    </div>
+    <div class="card">
+      <div class="cardHead"><div><h3>Dispatches today</h3><p class="sub">21 Sep · gate-pass controlled</p></div></div>
+      <div class="scrollX"><table class="tbl" style="min-width:380px"><tbody>
+      ${DB.dispatches.map(d=>`<tr><td class="main-cell"><b class="mono">${d.dc}</b><span>${d.c}</span></td><td>${chip(d.gp)}</td></tr>`).join('')}
+      </tbody></table></div>
+      <div style="margin-top:8px"><button class="linkBtn" data-goto="inventory" data-gtab="dispatch">Dispatch board →</button></div>
+    </div>
+    <div class="card">
+      <div class="cardHead"><div><h3>Activity</h3><p class="sub">Every action is logged and traceable</p></div></div>
+      <div class="feed">${log.slice(0,5).map(e=>`<div class="feedIt"><span class="when">${e.t.replace(' · ','<br>')}</span><div class="what"><b>${e.u}</b> <span>${e.a}</span></div></div>`).join('')}</div>
+      <div style="margin-top:8px"><button class="linkBtn" data-goto="admin" data-gtab="log">Full audit trail →</button></div>
+    </div>
+  </div>`;
+}
+
+function renderApprovals(){
+  const isMD=state.role==='md';
+  const done=approvals.filter(a=>a.st!=='pending').length;
+  return statRow([['Pending',pendCount()],['Actioned today',done],['Escalation SLA','24 hrs'],['Approval levels','up to 3']])+
+  `<p class="sub" style="margin:-6px 0 14px;color:var(--ink3);font-size:12.5px">${isMD?'You are the final approver on these requests — action them and watch the audit trail update.':'Signed in as '+ROLES[state.role].name+' — these requests route to the Managing Director for final approval.'}</p>`+
+  `<div class="apGrid">`+approvals.map(a=>{
+    let foot='';
+    if(a.st==='pending') foot=isMD
+      ?`<div class="apBtns"><button class="btn btnSm" data-ap="${a.id}" data-do="approve">Approve</button><button class="btnGhost btnSm danger" data-ap="${a.id}" data-do="reject">Reject</button></div>`
+      :`<div class="apNote">Requires Managing Director approval · you will be notified</div>`;
+    else foot=`<div class="apBtns">${chip(a.st==='approved'?['Approved · '+a.when,'ok']:['Rejected · '+a.when,'bad'])}<span class="apNote">Logged to audit trail</span></div>`;
+    return `<div class="apCard ${a.st!=='pending'?'done':''}">
+      <div class="apTop">${chip([a.type,a.k])}<span class="mono">${a.ref}</span></div>
+      <h4>${a.t}</h4><div class="apMeta">${a.m}</div>
+      ${a.v?`<div class="apVal">${inr(a.v)}</div>`:''}${foot}</div>`;
+  }).join('')+`</div>`;
+}
+
+function renderSales(){
+  const t=state.tabs.sales;
+  let body='';
+  if(t==='pipeline'){
+    body=statRow([['Open leads','38'],['Pipeline value','₹ 2.41 Cr'],['Won this month','12 · ₹ 42.8 L'],['Follow-ups on time','86%']])+
+    `<div class="row r-main"><div class="card"><div class="cardHead"><div><h3>Lead pipeline</h3><p class="sub">Every lead carries an owner, stage and next follow-up — nothing slips</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Company</th><th>Owner</th><th>Stage</th><th class="num">Est. value</th><th>Next follow-up</th></tr></thead><tbody>
+    ${DB.leads.map(l=>`<tr><td class="main-cell"><b>${l.c}</b><span>${l.city}</span></td><td>${l.o}</td><td>${chip(l.st)}</td><td class="num">${lak(l.v)}</td><td>${l.f}</td></tr>`).join('')}
+    </tbody></table></div></div>
+    <div class="card"><div class="cardHead"><div><h3>Today’s follow-ups</h3><p class="sub">21 Sep · synced to each executive’s Google Calendar</p></div></div>
+    ${DB.followups.map(f=>`<div class="alertIt"><span class="sq" style="background:var(--${f.st[1]==='ok'?'ok':f.st[1]==='bad'?'bad':'c1'})"></span><div><b>${f.t}</b> — <span style="font-size:12.5px">${f.w}</span><div class="mut" style="font-size:11.5px">${f.o} · ${chip(f.st)}</div></div></div>`).join('')}
+    <p class="emptyNote">Missed follow-ups escalate to the Sales Head automatically.</p></div></div>`;
+  } else if(t==='enquiries'){
+    body=statRow([['Open','6'],['Quoted','4'],['Converted this month','9'],['Avg. first response','3.1 hrs']])+
+    `<div class="card"><div class="cardHead"><div><h3>Enquiries</h3><p class="sub">Custom enquiry templates capture your fields · one-click conversion to quotation with full revision history</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Enquiry</th><th>Customer</th><th>Requirement</th><th class="num">Est. value</th><th>Status</th><th>Owner</th></tr></thead><tbody>
+    ${DB.enquiries.map(q=>`<tr><td><span class="mono">${q.no}</span> <span class="rev">R${q.rev}</span></td><td>${q.c}</td><td>${q.what}</td><td class="num">${lak(q.v)}</td><td>${chip(q.st)}</td><td>${q.o}</td></tr>`).join('')}
+    </tbody></table></div><p class="emptyNote" style="padding-left:2px">Documents (drawings, site photos, rate lists) attach to every enquiry and follow it through to the order.</p></div>`;
+  } else if(t==='quotes'){
+    body=`<div class="card"><div class="cardHead"><div><h3>Quotations</h3><p class="sub">Click a quotation to see its full revision history and approval trail</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Quotation</th><th>Customer</th><th class="num">Value</th><th class="num">Margin</th><th>Status</th><th>Date</th></tr></thead><tbody>
+    ${DB.quotes.map((q,i)=>`<tr class="click" data-quote="${i}"><td><span class="mono">${q.no}</span> <span class="rev">R${q.rev}</span></td><td class="main-cell"><b>${q.cust}</b><span>${q.city}</span></td><td class="num">${inr(q.v)}</td><td class="num">${q.m}</td><td>${chip(q.st)}</td><td>${q.d}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  } else if(t==='orders'){
+    body=`<div class="card"><div class="cardHead"><div><h3>Sales orders</h3><p class="sub">Fulfilment tracked from allocation to proof of delivery</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Order</th><th>Customer</th><th class="num">Value</th><th style="min-width:130px">Fulfilment</th><th>Dispatch by</th><th>Status</th></tr></thead><tbody>
+    ${DB.orders.map(o=>`<tr><td class="mono">${o.no}</td><td>${o.c}</td><td class="num">${inr(o.v)}</td><td><div style="display:flex;gap:8px;align-items:center"><span class="meter" style="flex:1"><i style="width:${o.f}%"></i></span><span style="font-size:11.5px;color:var(--ink3)">${o.f}%</span></div></td><td>${o.by}</td><td>${chip(o.st)}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  } else if(t==='field'){
+    body=statRow([['Visits completed','8'],['Scheduled','3'],['Distance logged','117 km'],['Collected in field','₹ 1.40 L']])+
+    `<div class="routes">${DB.field.map(r=>`<div class="route">
+      <div class="rHead"><span class="avm">${r.rep.split(' ').map(w=>w[0]).join('')}</span><b>${r.rep}</b><span class="mut">${r.terr} · ${r.km}</span></div>
+      ${r.stops.map(s=>`<div class="stop"><span class="t">${s.t}</span><div><b>${s.p}</b> ${s.gps?'<span class="gps">● GPS verified</span>':'<span class="pend">○ scheduled</span>'}<div style="color:var(--ink3);font-size:11.5px">${s.note}</div></div></div>`).join('')}
+    </div>`).join('')}</div>
+    <p class="emptyNote">Daily movement reports compile automatically at day end — check-ins are GPS-stamped from the field app.</p>`;
+  } else {
+    const isMD=state.role==='md';
+    body=`<div class="card"><div class="cardHead"><div><h3>Travel claims</h3><p class="sub">Claims flow from the field app to payroll after approval</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Claim</th><th>Employee</th><th>Purpose</th><th class="num">Amount</th><th>Status</th></tr></thead><tbody>
+    ${DB.claims.map(c=>`<tr><td class="mono">${c.no}</td><td>${c.e}</td><td>${c.p}</td><td class="num">${inr(c.v)}</td><td>${chip(c.st)}${c.st[1]==='warn'&&isMD?' <button class="linkBtn" data-goto="approvals">review</button>':''}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  }
+  return subtabs('sales',[['pipeline','Leads & follow-ups'],['enquiries','Enquiries'],['quotes','Quotations'],['orders','Sales orders'],['field','Field team · DMR'],['claims','Travel claims']])+body;
+}
+
+function renderPurchase(){
+  const t=state.tabs.purchase;let body='';
+  if(t==='indents'){
+    body=`<div class="card"><div class="cardHead"><div><h3>Purchase indents</h3><p class="sub">Raised by departments · allocated to vendors by purchase team</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Indent</th><th>Item</th><th>Department</th><th class="num">Qty</th><th>Status</th></tr></thead><tbody>
+    ${DB.indents.map(i=>`<tr><td class="mono">${i.no}</td><td>${i.item}</td><td>${i.dept}</td><td class="num">${i.qty}</td><td>${chip(i.st)}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  } else if(t==='pos'){
+    body=`<div class="card"><div class="cardHead"><div><h3>Purchase orders</h3><p class="sub">POs above ₹ 2 L route to the Managing Director automatically</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>PO</th><th>Vendor</th><th class="num">Value</th><th>Date</th><th>Status</th></tr></thead><tbody>
+    ${DB.pos.map(p=>`<tr><td class="mono">${p.no}</td><td>${p.v}</td><td class="num">${inr(p.val)}</td><td>${p.d}</td><td>${chip(p.st)}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  } else if(t==='vendors'){
+    body=`<div class="vGrid">${DB.vendors.map(v=>`<div class="vCard"><h4>${v.n}</h4><div class="mut">${v.cat} · rating ${v.rate}</div>
+      <div class="kvline"><span>GSTIN</span><b class="mono" style="font-size:11px">${v.gst}</b></div>
+      <div class="kvline"><span>Outstanding</span><b>${inr(v.out)}</b></div>
+      <div class="kvline"><span>Advance wallet</span><b>${v.wal?inr(v.wal):'—'}</b></div></div>`).join('')}</div>
+    <p class="emptyNote">Vendor wallets hold advances and adjust automatically against invoices — payment controls per the approved hierarchy.</p>`;
+  } else {
+    body=`<div class="card"><div class="cardHead"><div><h3>Debit notes</h3><p class="sub">Raised against GRN mismatches · settle against next payment</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>DN</th><th>Vendor</th><th>Reason</th><th class="num">Value</th><th>Status</th></tr></thead><tbody>
+    ${DB.dns.map(d=>`<tr><td class="mono">${d.no}</td><td>${d.v}</td><td>${d.reason}</td><td class="num">${inr(d.val)}</td><td>${chip(d.st)}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  }
+  return subtabs('purchase',[['indents','Indents'],['pos','Purchase orders'],['vendors','Vendors'],['dn','Debit notes']])+body;
+}
+
+function renderInventory(){
+  const t=state.tabs.inventory;let body='';
+  if(t==='catalogue'){
+    body=statRow([['Active SKUs','1,248'],['Stock on hand','9,400 CFT + 1,090 sheets'],['Stock value','₹ 2.84 Cr'],['Below reorder','3 SKUs']])+
+    `<div class="card"><div class="cardHead"><div><h3>Product catalogue</h3><p class="sub">Species → size → grade variants, multi-level pricing, system-generated barcodes</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>SKU</th><th>Product</th><th>Unit</th><th class="num">Retail</th><th class="num">Wholesale</th><th class="num">In stock</th><th>Barcode</th></tr></thead><tbody>
+    ${DB.skus.map(s=>`<tr><td class="mono">${s.sku}</td><td class="main-cell"><b>${s.p}</b><span>${s.vr}</span></td><td style="color:var(--ink3)">${s.unit}</td><td class="num">${inr(s.rt)}</td><td class="num">${inr(s.wh)}</td><td class="num">${s.stk}${s.low?' '+chip(['below '+s.low,'warn']):''}</td><td>${barcode(s.sku)}</td></tr>`).join('')}
+    </tbody></table></div><p class="emptyNote" style="padding-left:2px">A third project-rate tier applies per customer group · per-product charges (cutting, planing) attach automatically at billing.</p></div>`;
+  } else if(t==='stock'){
+    body=`<div class="card" style="margin-bottom:16px"><div class="cardHead"><div><h3>Stock control</h3><p class="sub">Blocking reserves stock the moment an order is confirmed — and auto-releases on the block date</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>SKU</th><th class="num">Available</th><th class="num">Blocked</th><th>Blocked for · auto-release</th><th>Consignment</th></tr></thead><tbody>
+    ${DB.stock.map(s=>`<tr><td class="mono">${s.sku}${s.low?' '+chip(['low','warn']):''}</td><td class="num">${s.av}</td><td class="num">${s.bl}</td><td style="font-size:12px">${s.blref}</td><td>${s.cons}</td></tr>`).join('')}
+    </tbody></table></div>
+    <p class="emptyNote">Consignment stock at Surat yard and Bhiwandi godown stays on HYBEC’s books until billed — reconciled per storage unit.</p></div>
+    <div class="card"><div class="cardHead"><div><h3>Transfers & recurring requests</h3><p class="sub">Storage units are user-defined — yards, godowns, consignment depots</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Ref</th><th>Item</th><th>Route</th><th>Status</th></tr></thead><tbody>
+    ${DB.transfers.map(x=>`<tr><td class="mono">${x.no}</td><td>${x.what}</td><td style="font-size:12px">${x.route}</td><td>${chip(x.st)}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  } else {
+    body=statRow([['Dispatches today','3'],['Volume out','550 CFT + 96 sheets'],['Gate passes','2 approved · 1 pending'],['PODs received','1']])+
+    `<div class="vGrid" style="margin-bottom:16px">${DB.dispatches.map(d=>`<div class="vCard"><h4 class="mono" style="font-size:12.5px">${d.dc}</h4><div class="mut">${d.c}</div>
+      <div class="kvline"><span>Transport</span><b style="font-size:11.5px">${d.tr}</b></div>
+      <div class="kvline"><span>Load</span><b style="font-size:11.5px">${d.bx}</b></div>
+      <div style="margin-top:8px">${chip(d.gp)}</div></div>`).join('')}</div>
+    <div class="card"><div class="cardHead"><div><h3>Gate passes</h3><p class="sub">Nothing crosses the gate without an approved pass</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Pass</th><th>Type</th><th>Reference</th><th>Approved by</th><th>Status</th></tr></thead><tbody>
+    ${DB.gps.map(g=>`<tr><td class="mono">${g.no}</td><td>${g.type}</td><td class="mono" style="font-size:11.5px">${g.ref}</td><td>${g.by}</td><td>${chip(g.st)}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  }
+  return subtabs('inventory',[['catalogue','Catalogue'],['stock','Stock control'],['dispatch','Dispatch & gate pass']])+body;
+}
+
+function renderCustomers(){
+  return statRow([['Receivables','₹ 42.05 L'],['Overdue','₹ 23.6 L'],['Advance wallets','₹ 1.85 L · 2 customers'],['Open tickets','2']])+
+  `<div class="row r-23">
+    <div class="card"><div class="cardHead"><div><h3>Customer accounts</h3><p class="sub">Credit limits enforced at order entry · click a customer for detail</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Customer</th><th>GSTIN</th><th style="min-width:120px">Credit used</th><th class="num">Outstanding</th><th>Overdue</th></tr></thead><tbody>
+    ${DB.customers.map((c,i)=>`<tr class="click" data-cust="${i}"><td class="main-cell"><b>${c.n}</b><span>${c.city}</span></td><td class="mono" style="font-size:11px">${c.gst}</td><td><div style="display:flex;gap:8px;align-items:center"><span class="meter ${c.used>85?'bad':c.used>60?'warn':''}" style="flex:1"><i style="width:${c.used}%"></i></span><span style="font-size:11.5px;color:var(--ink3)">${c.used}%</span></div></td><td class="num">${inr(c.out)}</td><td>${chip(c.od)}</td></tr>`).join('')}
+    </tbody></table></div></div>
+    <div style="display:grid;gap:16px;align-content:start">
+      <div class="card"><div class="cardHead"><div><h3>Receivables aging</h3><p class="sub">₹ lakh · total outstanding ₹ 42.0 L</p></div></div>
+      ${hbars(DB.aging.map(a=>({l:a.l,v:a.v,val:'₹ '+a.v.toFixed(1)+' L'})),ORD)}</div>
+      <div class="card"><div class="cardHead"><div><h3>Collection workflow</h3><p class="sub">Alerts fire automatically on due dates</p></div></div>
+      ${DB.collections.map(c=>`<div class="alertIt"><span class="sq" style="background:${c.k}"></span><div><b>${c.t}</b> — <span style="font-size:12.5px">${c.w}</span></div></div>`).join('')}</div>
+    </div></div>
+  <div class="card"><div class="cardHead"><div><h3>Support tickets</h3><p class="sub">Complaints and requests logged against the customer record · SLA timers run per priority</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Ticket</th><th>Customer</th><th>Subject</th><th>Priority</th><th>Status</th><th>Raised</th></tr></thead><tbody>
+    ${DB.tickets.map(k=>`<tr><td class="mono">${k.no}</td><td>${k.c}</td><td>${k.w}</td><td>${chip(k.pr)}</td><td>${chip(k.st)}</td><td>${k.d}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+}
+
+function renderAccounting(){
+  const t=state.tabs.accounting;let body='';
+  if(t==='overview'){
+    body=`<div class="row r-hero" style="grid-template-columns:repeat(4,1fr)">
+      <div class="card tile"><div class="tLabel">Cash in hand</div><div class="tVal">₹ 3.84 L</div><div class="tSub">Verified today · 09:00</div></div>
+      <div class="card tile"><div class="tLabel">Bank — HDFC current</div><div class="tVal">₹ 28.65 L</div><div class="tSub">Reconciled to 20 Sep</div></div>
+      <div class="card tile"><div class="tLabel">Receivables</div><div class="tVal">₹ 42.05 L</div><div class="tSub">₹ 23.6 L beyond terms</div></div>
+      <div class="card tile"><div class="tLabel">Payables</div><div class="tVal">₹ 18.71 L</div><div class="tSub">₹ 2.10 L due this week</div></div>
+    </div>
+    <div class="row r-main">
+      <div class="card"><div class="cardHead"><div><h3>Cash flow</h3><p class="sub">Monthly inflow vs outflow · ₹ lakh · Apr–Sep FY 26-27</p></div></div>
+      ${groupBars('chCash',DB.cashM,[{n:'Inflow',c:'var(--c1)',d:DB.inflow},{n:'Outflow',c:'var(--c2)',d:DB.outflow}],80,20,'₹ L')}</div>
+      <div class="card"><div class="cardHead"><div><h3>Vouchers awaiting action</h3><p class="sub">Approval-driven entries — nothing posts unchecked</p></div></div>
+      ${DB.vouchers.map(v=>`<div class="alertIt"><span class="sq" style="background:${v.st[1]==='warn'?'var(--warn)':'var(--ok)'}"></span><div><b class="mono" style="font-size:11.5px">${v.no}</b> <span style="font-size:12.5px">${v.w}</span><div style="margin-top:3px">${chip(v.st)}</div></div></div>`).join('')}
+      <div style="margin-top:10px"><button class="linkBtn" data-goto="approvals">Go to approvals →</button></div></div>
+    </div>
+    <div class="row r-two">
+      <div class="card"><div class="cardHead"><div><h3>Cashflow planner — next 14 days</h3><p class="sub">Built from PDCs, promises, vendor dues and payroll</p></div></div>
+      ${DB.planner.map(p=>`<div class="alertIt"><span class="sq" style="background:${p.out?'var(--c2)':'var(--c1)'}"></span><div><b>${p.d}</b> — <span style="font-size:12.5px">${p.w}</span></div><span style="margin-left:auto;font-variant-numeric:tabular-nums;font-weight:650;font-size:12.5px;color:${p.out?'var(--bad-ink)':'var(--ok-ink)'}">${p.v}</span></div>`).join('')}
+      <p class="emptyNote">Projected bank position on 1 Oct: <b>₹ 26.4 L</b> — after payroll and vendor dues.</p></div>
+      <div class="card"><div class="cardHead"><div><h3>Tax profiles & extra charges</h3><p class="sub">Applied automatically on quotations, orders and invoices</p></div></div>
+      <div class="dSec" style="margin-bottom:12px"><h5>Tax profiles</h5>${DB.taxProfiles.map(x=>`<div class="alertIt"><span class="sq" style="background:var(--accent)"></span><div style="font-size:12.5px">${x}</div></div>`).join('')}</div>
+      <div class="dSec" style="margin-bottom:0"><h5>Extra charges</h5>
+      <div class="scrollX"><table class="tbl" style="min-width:380px"><tbody>
+      ${DB.extraCharges.map(x=>`<tr><td><b style="font-weight:600">${x.n}</b></td><td class="num">${x.v}</td><td style="color:var(--ink3);font-size:12px">${x.ap}</td></tr>`).join('')}
+      </tbody></table></div></div></div>
+    </div>`;
+  } else if(t==='gst'){
+    body=statRow([['e-Invoices · Sep','148'],['e-Way bills · Sep','92'],['GST payable','₹ 6.84 L'],['ITC available','₹ 4.21 L']])+
+    `<div class="card"><div class="cardHead"><div><h3>GST & statutory compliance</h3><p class="sub">Returns auto-prepared from transactions — no re-entry on the portal</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Return</th><th>Due</th><th>Status</th></tr></thead><tbody>
+    ${DB.gstCal.map(g=>`<tr><td><b style="font-weight:600">${g.r}</b></td><td>${g.due}</td><td>${chip(g.st)}</td></tr>`).join('')}
+    </tbody></table></div>
+    <p class="emptyNote">e-Invoice (IRN) and e-way bill generate at dispatch via GSP integration · HSN-wise summary and TDS computations export in portal-ready format.</p></div>`;
+  } else if(t==='daybook'){
+    body=`<div class="card"><div class="cardHead"><div><h3>Day book — 21 Sep 2026</h3><p class="sub">Live view of today’s postings</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Voucher</th><th>Type</th><th>Particulars</th><th class="num">Debit (₹)</th><th class="num">Credit (₹)</th><th>Entered by</th></tr></thead><tbody>
+    ${DB.daybook.map(d=>`<tr><td class="mono">${d.v}</td><td>${chip(d.type)}</td><td>${d.p}</td><td class="num">${d.dr}</td><td class="num">${d.cr}</td><td>${d.by}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  } else if(t==='ledgers'){
+    body=`<div class="card"><div class="cardHead"><div><h3>Ledger balances</h3><p class="sub">Drill from balance sheet to voucher in two clicks</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Ledger</th><th>Group</th><th class="num">Balance</th><th></th></tr></thead><tbody>
+    ${DB.ledgers.map(l=>`<tr><td><b style="font-weight:600">${l.l}</b></td><td style="color:var(--ink3)">${l.g}</td><td class="num">${l.bal}</td><td style="color:var(--ink3);font-size:11.5px">${l.s}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  } else {
+    body=`<div class="card"><div class="cardHead"><div><h3>Asset register</h3><p class="sub">Barcoded assets with location, depreciation and service tracking</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Asset</th><th>Location</th><th class="num">Purchase value</th><th class="num">WDV</th><th>Next event</th><th>Tag</th></tr></thead><tbody>
+    ${DB.assets.map(a=>`<tr><td class="main-cell"><b>${a.a}</b><span class="mono">${a.code} · dep ${a.dep}</span></td><td>${a.loc}</td><td class="num">${inr(a.pv)}</td><td class="num">${inr(a.wdv)}</td><td>${a.nx}</td><td>${barcode(a.code)}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  }
+  return subtabs('accounting',[['overview','Overview'],['gst','GST & compliance'],['daybook','Day book'],['ledgers','Ledgers'],['assets','Assets']])+body;
+}
+
+function renderHR(){
+  const t=state.tabs.hr;let body='';const isMD=state.role==='md';
+  if(t==='people'){
+    body=statRow([['Headcount','34'],['Sales','9'],['Yard & dispatch','8'],['Processing','6'],['Accounts','5'],['Purchase','4'],['Admin & HR','2']])+
+    `<div class="card"><div class="cardHead"><div><h3>Employees</h3><p class="sub">Department, level and designation drive approvals and payroll</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Employee</th><th>Designation</th><th>Department</th><th>Level</th><th>Joined</th></tr></thead><tbody>
+    ${DB.employees.map(e=>`<tr><td><span class="avm" style="margin-right:8px">${e.n.split(' ').map(w=>w[0]).join('')}</span><b style="font-weight:600">${e.n}</b></td><td>${e.ds}</td><td>${e.dept}</td><td>${e.lvl}</td><td>${e.doj}</td></tr>`).join('')}
+    </tbody></table></div><p class="emptyNote" style="padding-left:2px">+ 28 more employees in the full register</p></div>`;
+  } else if(t==='attendance'){
+    body=`<div class="row r-three" style="grid-template-columns:repeat(3,1fr)">
+      <div class="card tile"><div class="tLabel">Present today</div><div class="tVal">27</div><div class="tSub">Biometric + app check-in</div></div>
+      <div class="card tile"><div class="tLabel">On field</div><div class="tVal">5</div><div class="tSub">GPS-tracked visits</div></div>
+      <div class="card tile"><div class="tLabel">On leave</div><div class="tVal">2</div><div class="tSub">Approved in system</div></div></div>
+    <div class="card"><div class="cardHead"><div><h3>Leave requests</h3><p class="sub">Multi-level approval by department hierarchy</p></div></div>
+    ${DB.leaves.map(l=>`<div class="alertIt"><span class="sq" style="background:${l.st==='pending'?'var(--warn)':'var(--ok)'}"></span><div><b>${l.e}</b> — <span style="font-size:12.5px">${l.t}</span><div style="margin-top:4px">${l.st==='pending'?(isMD?'<button class="linkBtn" data-goto="approvals">review in approvals →</button>':chip(['Pending approval','warn'])):chip(['Approved','ok'])}</div></div></div>`).join('')}
+    <p class="emptyNote">Timesheets close weekly and feed payroll automatically.</p></div>`;
+  } else if(t==='perf'){
+    body=`<div class="row r-two">
+      <div class="card"><div class="cardHead"><div><h3>Evaluation sheets</h3><p class="sub">HR defines the parameters — team leaders file on schedule</p></div></div>
+      ${DB.evalSheets.map(s=>`<div class="alertIt"><span class="sq" style="background:var(--accent)"></span><div><b>${s.n}</b><div class="mut">${s.p}</div><div class="mut" style="margin-top:2px">${s.f} · filed by ${s.by}</div></div></div>`).join('')}
+      <p class="emptyNote">Monthly reports compile per employee and share with team leaders and management.</p></div>
+      <div class="card"><div class="cardHead"><div><h3>September scores — sales team</h3><p class="sub">Weighted across scorecard parameters · out of 10</p></div></div>
+      <div class="scrollX"><table class="tbl" style="min-width:340px"><thead><tr><th>Employee</th><th class="num">Score</th><th class="num">vs Aug</th></tr></thead><tbody>
+      ${DB.evalScores.map(s=>`<tr><td><span class="avm" style="margin-right:8px">${s.e.split(' ').map(w=>w[0]).join('')}</span><b style="font-weight:600">${s.e}</b></td><td class="num" style="font-weight:650">${s.s}</td><td class="num"><span class="delta ${s.up?'up':'down'}">${s.up?'▲':'▼'} ${s.d}</span></td></tr>`).join('')}
+      </tbody></table></div></div>
+    </div>`;
+  } else {
+    body=statRow([['September gross','₹ 11.85 L'],['Deductions','₹ 1.42 L'],['Net payable','₹ 10.42 L'],['Status','Draft — pending approval']])+
+    `<div class="card"><div class="cardHead"><div><h3>Payroll run — September 2026</h3><p class="sub">Computed from attendance, leave and approved claims</p></div>
+    <div class="right"><button class="btn btnSm" data-act="payroll">Send for approval</button></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>Employee</th><th>Department</th><th class="num">Gross</th><th class="num">Deductions</th><th class="num">Net pay</th></tr></thead><tbody>
+    ${DB.payroll.map(p=>`<tr><td>${p.e}</td><td>${p.dept}</td><td class="num">${inr(p.g)}</td><td class="num">${inr(p.d)}</td><td class="num">${inr(p.n)}</td></tr>`).join('')}
+    <tr class="tot"><td>34 employees</td><td></td><td class="num">₹ 11,84,600</td><td class="num">₹ 1,42,150</td><td class="num">₹ 10,42,450</td></tr>
+    </tbody></table></div></div>`;
+  }
+  return subtabs('hr',[['people','People'],['attendance','Attendance & leave'],['perf','Performance'],['payroll','Payroll']])+body;
+}
+
+function renderAdmin(){
+  const t=state.tabs.admin;let body='';
+  if(t==='roles'){
+    const pc={full:'<span class="pcell p-full">Full</span>',edit:'<span class="pcell p-edit">Edit</span>',view:'<span class="pcell p-view">View</span>',none:'<span class="pcell p-none">—</span>'};
+    body=`<div class="card"><div class="cardHead"><div><h3>Roles & permissions</h3><p class="sub">Module access by role — enforced on every screen, action and report. Try the role switcher at the top right.</p></div></div>
+    <div class="scrollX"><table class="tbl permTbl"><thead><tr><th>Module</th>${DB.perms.cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>
+    ${DB.perms.rows.map(r=>`<tr><td><b style="font-weight:600">${r[0]}</b></td>${r.slice(1).map(v=>`<td>${pc[v]}</td>`).join('')}</tr>`).join('')}
+    </tbody></table></div></div>`;
+  } else if(t==='users'){
+    body=statRow([['Licensed seats','35'],['Active users','34'],['2FA enabled','33'],['Sessions today','21']])+
+    `<div class="card"><div class="cardHead"><div><h3>Users</h3><p class="sub">No per-user licence fee — the platform is HYBEC’s own</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>User</th><th>Role</th><th>Last login</th><th>2FA</th><th>Status</th></tr></thead><tbody>
+    ${DB.users.map(u=>`<tr><td><span class="avm" style="margin-right:8px">${u.n.split(' ').map(w=>w[0]).join('')}</span><b style="font-weight:600">${u.n}</b></td><td>${u.r}</td><td>${u.last}</td><td>${u.tfa?chip(['Enabled','ok']):chip(['Off','warn'])}</td><td>${chip(['Active','ok'])}</td></tr>`).join('')}
+    </tbody></table></div><p class="emptyNote" style="padding-left:2px">+ 28 more users</p></div>`;
+  } else if(t==='templates'){
+    body=`<div class="card"><div class="cardHead"><div><h3>Email templates</h3><p class="sub">Drag-and-drop editor · CC/BCC and attachments · every user’s digital signature attaches automatically</p></div></div>
+    ${DB.templates.map(tp=>`<div class="alertIt"><span class="sq" style="background:var(--accent)"></span><div style="min-width:0"><b>${tp.n}</b> ${tp.sig?chip(['Digital signature','info']):''}<div class="mut" style="margin:3px 0 5px">${tp.use}</div><div style="display:flex;gap:5px;flex-wrap:wrap">${tp.f.map(f=>`<span class="rev">${f}</span>`).join('')}</div></div></div>`).join('')}
+    <p class="emptyNote">Dynamic fields pull live values — customer name, amounts, LR and e-way bill numbers — at send time.</p></div>`;
+  } else {
+    body=`<div class="card"><div class="cardHead"><div><h3>Activity log</h3><p class="sub">Complete, tamper-evident record of every user action — approve something and watch it appear here</p></div></div>
+    <div class="scrollX"><table class="tbl"><thead><tr><th>When</th><th>User</th><th>Action</th><th>Module</th><th>Source</th></tr></thead><tbody>
+    ${log.map(e=>`<tr><td style="white-space:nowrap;color:var(--ink3)">${e.t}</td><td><b style="font-weight:600">${e.u}</b></td><td>${e.a}</td><td>${e.mod}</td><td class="mono" style="font-size:11px">${e.ip}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  }
+  return subtabs('admin',[['roles','Roles & permissions'],['users','Users'],['templates','Email templates'],['log','Activity log']])+body;
+}
+
+const SCREENS={dash:renderDash,approvals:renderApprovals,sales:renderSales,purchase:renderPurchase,inventory:renderInventory,customers:renderCustomers,accounting:renderAccounting,hr:renderHR,admin:renderAdmin};
+/* ---------------- render engine ---------------- */
+function renderNav(){
+  const role=ROLES[state.role];
+  $('#nav').innerHTML=NAV.map(g=>`<div class="ngroup"><h6>${g.g}</h6>`+g.items.map(it=>{
+    const locked=!role.allowed.includes(it.id);
+    const badge=it.badge&&pendCount()?`<span class="badge">${pendCount()}</span>`:(locked?'<span class="lock">🔒</span>':'');
+    return `<button class="nitem ${state.screen===it.id?'active':''} ${locked?'locked':''}" data-nav="${it.id}">
+      <svg viewBox="0 0 24 24" aria-hidden="true">${it.ic}</svg>${it.l}${badge}</button>`;
+  }).join('')+`</div>`).join('');
+  $('#sideUser').innerHTML=`<span class="av">${role.init}</span><div><b>${role.name}</b><span>${role.title} · HYBEC</span></div>`;
+  $('#roleSel').value=state.role;
+  const n=pendCount();$('#bellDot').textContent=n;$('#bellDot').hidden=!n;
+}
+const MOTION=()=>!matchMedia('(prefers-reduced-motion: reduce)').matches;
+function countUps(){
+  document.querySelectorAll('#screen .hVal, #screen .tVal').forEach(el=>{
+    const tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;
+    while(n=tw.nextNode()){
+      const m=n.textContent.match(/\d[\d,]*(?:\.\d+)?/);
+      if(!m)continue;
+      const raw=m[0],target=parseFloat(raw.replace(/,/g,'')),dec=(raw.split('.')[1]||'').length;
+      const pre=n.textContent.slice(0,m.index),post=n.textContent.slice(m.index+raw.length),node=n,fin=n.textContent;
+      const t0=performance.now(),dur=750;
+      let done=false;
+      const step=t=>{
+        if(done)return;
+        const p=Math.min(1,Math.max(0,(t-t0)/dur)),e=1-Math.pow(1-p,3);
+        if(p>=1){done=true;node.textContent=fin;return;}
+        node.textContent=pre+(target*e).toLocaleString('en-IN',{minimumFractionDigits:dec,maximumFractionDigits:dec})+post;
+        requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+      setTimeout(()=>{if(!done){done=true;node.textContent=fin;}},dur+150);
+      break;
+    }
+  });
+}
+function drawLines(root){
+  (root||document).querySelectorAll('svg .ln').forEach(l=>{
+    try{
+      const L=l.getTotalLength();
+      l.style.strokeDasharray=L;l.style.strokeDashoffset=L;
+      l.getBoundingClientRect();
+      l.style.transition='stroke-dashoffset .95s cubic-bezier(.4,0,.2,1) .1s';
+      l.style.strokeDashoffset='0';
+      setTimeout(()=>{l.style.strokeDasharray='none';l.style.transition='';},1150);
+    }catch(e){}
+  });
+}
+function enhance(){
+  if(!MOTION())return;
+  document.querySelectorAll('#screen .card,#screen .apCard,#screen .vCard,#screen .route').forEach((el,i)=>el.style.setProperty('--i',Math.min(i,12)));
+  countUps();
+  drawLines(document.getElementById('screen'));
+}
+function render(){
+  renderNav();
+  $('#screenTitle').textContent=TITLES[state.screen];
+  $('#screen').innerHTML=SCREENS[state.screen]();
+  $('.main').scrollTop=0;window.scrollTo({top:0});
+  wireCharts();
+  enhance();
+}
+function go(screen,tab){
+  const role=ROLES[state.role];
+  if(!role.allowed.includes(screen)){toast(`“${TITLES[screen]}” is restricted for ${role.title} — permissions are set in Admin & Audit`);return;}
+  state.screen=screen;
+  if(tab){const smap={dispatch:'inventory',log:'admin'};state.tabs[screen]=tab;}
+  render();
+  $('#sidebar').classList.remove('open');$('#navScrim').classList.remove('on');
+}
+function toast(msg){
+  const t=$('#toast');t.textContent=msg;t.classList.add('on');
+  clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),3200);
+}
+
+/* ---------------- drawers ---------------- */
+function openDrawer(head,body){
+  $('#dHead').innerHTML=head+`<button class="x" id="dX" aria-label="Close">✕</button>`;
+  $('#dBody').innerHTML=body;
+  $('#drawer').classList.add('on');$('#drawScrim').classList.add('on');
+  $('#dX').onclick=closeDrawer;
+}
+function closeDrawer(){$('#drawer').classList.remove('on');$('#drawScrim').classList.remove('on');}
+function quoteDrawer(i){
+  const q=DB.quotes[i];
+  const revs=q.no==='QTN-26-0148'?DB.revs0148:[{r:'R'+q.rev,d:q.d+' · 11:30',m:q.rev?'Latest revision sent to customer':'Created and sent to customer',v:q.v,cur:1}];
+  const items=DB.quoteItems;
+  openDrawer(
+    `<div><h2>${q.cust}</h2><span class="mono">${q.no} · revision R${q.rev} · ${q.d} 2026</span></div>`,
+    `<div class="dSec"><div class="kv">
+      <div><small>Quotation value</small><b>${inr(q.v)}</b></div>
+      <div><small>Margin</small><b>${q.m}</b></div>
+      <div><small>Status</small><b>${chip(q.st)}</b></div>
+      <div><small>Owner</small><b>Rohit Sawant</b></div>
+      <div><small>Valid until</small><b>18 Oct 2026</b></div>
+      <div><small>Payment terms</small><b>30 days · PDC</b></div></div></div>
+    <div class="dSec"><h5>Line items</h5>
+      <div class="scrollX" style="margin:0;padding:0"><table class="tbl" style="min-width:380px"><thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Rate</th><th class="num">Amount</th></tr></thead><tbody>
+      ${items.map(it=>`<tr><td class="main-cell"><b style="font-size:12px">${it.d}</b><span class="mono">${it.sku}</span></td><td class="num">${it.q}</td><td class="num">${it.rate.toLocaleString('en-IN')}</td><td class="num">${it.amt.toLocaleString('en-IN')}</td></tr>`).join('')}
+      </tbody></table></div>
+      <p class="emptyNote">+ 12 more line items · cutting & planing charges applied per CFT</p></div>
+    <div class="dSec"><h5>Tax & documents</h5>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">${chip(['GST 18% · on final amount','info'])}${chip(['Cutting ₹18/CFT','mut'])}${chip(['Planing ₹12/CFT','mut'])}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="rev">site-plan.pdf</span><span class="rev">grade-photos.zip</span><span class="rev">client-PO-draft.pdf</span></div></div>
+    <div class="dSec"><h5>Revision history</h5><div class="tl">
+      ${revs.map(r=>`<div class="tlIt ${r.cur?'cur':''}"><b>${r.r} — ${inr(r.v)}</b><div class="m">${r.m}</div><div class="d">${r.d}</div></div>`).join('')}
+    </div></div>
+    <div class="dSec"><h5>Approval trail</h5>
+      <div class="alertIt"><span class="sq" style="background:var(--ok)"></span><div><b>Sales Head — approved</b><div class="mut">Rohit Sawant · 19 Sep, 16:42</div></div></div>
+      <div class="alertIt"><span class="sq" style="background:${q.st[1]==='warn'?'var(--warn)':'var(--ok)'}"></span><div><b>Managing Director — ${q.st[1]==='warn'?'pending':'not required'}</b><div class="mut">${q.st[1]==='warn'?'Discount above 5% floor · routed automatically':'Within discount floor'}</div></div></div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" data-act="qpdf">Download PDF</button>
+      <button class="btnGhost" data-act="qsend">Email to customer</button>
+      <button class="btnGhost" data-act="qrev">New revision</button></div>`);
+}
+function custDrawer(i){
+  const c=DB.customers[i];
+  openDrawer(
+    `<div><h2>${c.n}</h2><span class="mono">${c.gst} · ${c.city}, Maharashtra</span></div>`,
+    `<div class="dSec"><div class="kv">
+      <div><small>Credit limit</small><b>${inr(c.lim)}</b></div>
+      <div><small>Credit used</small><b>${c.used}%</b></div>
+      <div><small>Outstanding</small><b>${inr(c.out)}</b></div>
+      <div><small>Overdue</small><b>${chip(c.od)}</b></div>
+      <div><small>Advance wallet</small><b>${c.wal?inr(c.wal)+' credit':'—'}</b></div>
+      <div><small>Shipping addresses</small><b>3 on record</b></div></div></div>
+    <div class="dSec"><h5>Recent activity</h5>
+      <div class="alertIt"><span class="sq" style="background:var(--ok)"></span><div><b>Receipt ₹ 1,50,000</b><div class="mut">RV-1182 · 20 Sep · posted by Neha Kulkarni</div></div></div>
+      <div class="alertIt"><span class="sq" style="background:var(--c1)"></span><div><b>Invoice ₹ 2,20,000</b><div class="mut">INV-26-0688 · 14 Sep · against SO-26-0193</div></div></div>
+      <div class="alertIt"><span class="sq" style="background:var(--warn)"></span><div><b>Payment-due alert sent</b><div class="mut">Auto-email + owner task · 12 Sep</div></div></div></div>
+    <div class="dSec"><h5>Collection plan</h5>
+      <p style="font-size:12.5px;margin:0;color:var(--ink2)">Owner: Rohit Sawant · next action <b>23 Sep — collection visit</b>. Promise-to-pay recorded for ₹ 3.80 L. New orders above the credit limit will require MD override.</p></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" data-act="qpdf">Statement of account</button>
+      <button class="btnGhost" data-act="qsend">Send reminder</button></div>`);
+}
+
+/* ---------------- approvals ---------------- */
+function actApproval(id,doWhat){
+  const a=approvals.find(x=>x.id===id);if(!a||a.st!=='pending')return;
+  a.st=doWhat==='approve'?'approved':'rejected';
+  a.when=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  const role=ROLES[state.role];
+  log.unshift({t:nowStr(),u:role.name,a:`${doWhat==='approve'?'approved':'rejected'} ${a.ref} — ${a.t}`,mod:'Approvals',ip:'103.86.21.2'});
+  toast(`${a.ref} ${doWhat==='approve'?'approved':'rejected'} — recorded in the audit trail`);
+  render();
+}
+
+/* ---------------- search ---------------- */
+const INDEX=[
+  ...DB.quotes.map(q=>({t:q.no+' · '+q.cust,s:'Quotation',go:['sales','quotes']})),
+  ...DB.customers.map(c=>({t:c.n,s:'Customer',go:['customers']})),
+  ...DB.skus.map(s=>({t:s.sku+' · '+s.p,s:'SKU',go:['inventory','catalogue']})),
+  ...DB.pos.map(p=>({t:p.no+' · '+p.v,s:'Purchase order',go:['purchase','pos']})),
+  ...DB.orders.map(o=>({t:o.no+' · '+o.c,s:'Sales order',go:['sales','orders']})),
+  ...DB.employees.map(e=>({t:e.n,s:'Employee',go:['hr','people']})),
+  ...DB.assets.map(a=>({t:a.code+' · '+a.a,s:'Asset',go:['accounting','assets']})),
+  ...DB.enquiries.map(e=>({t:e.no+' · '+e.c,s:'Enquiry',go:['sales','enquiries']})),
+  ...DB.tickets.map(k=>({t:k.no+' · '+k.c,s:'Support ticket',go:['customers']})),
+  {t:'GST & compliance — returns, e-invoices',s:'Accounting',go:['accounting','gst']},
+  {t:'Email templates',s:'Admin',go:['admin','templates']},
+  {t:'Stock transfers & blocking',s:'Inventory',go:['inventory','stock']},
+  {t:'Cashflow planner',s:'Accounting',go:['accounting','overview']},
+  {t:'Roles & permissions',s:'Admin',go:['admin','roles']},
+  {t:'Activity log / audit trail',s:'Admin',go:['admin','log']},
+  {t:'Payroll — September run',s:'HR',go:['hr','payroll']},
+  {t:'Day book',s:'Accounting',go:['accounting','daybook']}];
+function doSearch(qs){
+  const pop=$('#sPop');
+  if(!qs){pop.hidden=true;return;}
+  const q=qs.toLowerCase();
+  const hits=INDEX.filter(x=>x.t.toLowerCase().includes(q)||x.s.toLowerCase().includes(q)).slice(0,8);
+  pop.innerHTML=hits.length?hits.map((h,i)=>`<button data-sr="${INDEX.indexOf(h)}"><span class="sr-t">${esc(h.t)}</span><span class="sr-s">${h.s}</span></button>`).join(''):`<button disabled style="color:var(--ink3)">No matches in sample data</button>`;
+  pop.hidden=false;
+}
+
+/* ---------------- chart wiring ---------------- */
+function wireCharts(){
+  document.querySelectorAll('.chartWrap').forEach(w=>{
+    const cfg=CHARTS[w.id];if(!cfg)return;
+    const svg=w.querySelector('svg'),tip=w.querySelector('.tip');
+    if(!svg||svg._wired)return;svg._wired=true;
+    const W=+svg.dataset.w||640;
+    if(cfg.kind==='line'){
+      const pl=+svg.dataset.pl,iw=+svg.dataset.iw,pt=+svg.dataset.pt,ih=+svg.dataset.ih;
+      const chL=svg.querySelector('.chL'),chx=svg.querySelector('.chx');
+      const n=cfg.labels.length;
+      const move=e=>{
+        const r=svg.getBoundingClientRect();
+        const mx=(e.clientX-r.left)*W/r.width;
+        let i=Math.round((mx-pl)/iw*(n-1));i=Math.max(0,Math.min(n-1,i));
+        const x=pl+iw*i/(n-1);
+        chL.style.display='';chx.setAttribute('x1',x);chx.setAttribute('x2',x);
+        cfg.series.forEach((s,si)=>{
+          const c=svg.querySelector('.chd'+si);
+          c.setAttribute('cx',x);c.setAttribute('cy',pt+ih*(1-s.d[i]/cfg.ymax));
+        });
+        tip.innerHTML=`<b>Week of ${cfg.labels[i]}</b>`+cfg.series.map(s=>`<div><i style="background:${s.c}"></i>${s.n}: ₹ ${s.d[i].toFixed(1)} L</div>`).join('');
+        tip.style.display='block';
+        const px=x/W*r.width;
+        tip.style.left=Math.min(Math.max(px+12,8),r.width-150)+'px';
+        tip.style.top='30px';
+      };
+      svg.addEventListener('pointermove',move);
+      svg.addEventListener('pointerleave',()=>{chL.style.display='none';tip.style.display='none';});
+    } else if(cfg.kind==='gbar'){
+      svg.addEventListener('pointermove',e=>{
+        const g=e.target.closest('.gv');
+        if(!g){tip.style.display='none';return;}
+        const i=+g.dataset.i,r=svg.getBoundingClientRect();
+        tip.innerHTML=`<b>${cfg.labels[i]} 2026</b>`+cfg.series.map(s=>`<div><i style="background:${s.c}"></i>${s.n}: ₹ ${s.d[i].toFixed(1)} L</div>`).join('')+`<div style="margin-top:2px;color:var(--ink3)">Net: ₹ ${(cfg.series[0].d[i]-cfg.series[1].d[i]).toFixed(1)} L</div>`;
+        tip.style.display='block';
+        const px=(e.clientX-r.left);
+        tip.style.left=Math.min(Math.max(px+10,8),r.width-150)+'px';tip.style.top='28px';
+      });
+      svg.addEventListener('pointerleave',()=>tip.style.display='none');
+    }
+  });
+}
+
+/* ---------------- events ---------------- */
+document.addEventListener('click',e=>{
+  const nav=e.target.closest('[data-nav]');
+  if(nav){go(nav.dataset.nav);return;}
+  const gt=e.target.closest('[data-goto]');
+  if(gt){if(gt.dataset.gtab)state.tabs[gt.dataset.goto]=gt.dataset.gtab;go(gt.dataset.goto);return;}
+  const st=e.target.closest('[data-stab]');
+  if(st){state.tabs[state.screen]=st.dataset.stab;render();return;}
+  const ap=e.target.closest('[data-ap]');
+  if(ap){actApproval(+ap.dataset.ap,ap.dataset.do);return;}
+  const qr=e.target.closest('[data-quote]');
+  if(qr){quoteDrawer(+qr.dataset.quote);return;}
+  const cr=e.target.closest('[data-cust]');
+  if(cr){custDrawer(+cr.dataset.cust);return;}
+  const sr=e.target.closest('[data-sr]');
+  if(sr){const h=INDEX[+sr.dataset.sr];$('#sPop').hidden=true;$('#searchIn').value='';if(h.go[1])state.tabs[h.go[0]]=h.go[1];go(h.go[0]);return;}
+  const act=e.target.closest('[data-act]');
+  if(act){
+    const a=act.dataset.act;
+    if(a==='revtable'){state.revTable=!state.revTable;render();}
+    else if(a==='qpdf')toast('Document generation with HYBEC letterhead ships in the delivered build');
+    else if(a==='qsend')toast('Email templates with dynamic fields ship in the delivered build');
+    else if(a==='qrev')toast('New revisions keep the full history — every change stays traceable');
+    else if(a==='payroll')toast('Payroll run routed for approval — appears in the approval queue');
+    return;
+  }
+  if(!e.target.closest('.tSearch'))$('#sPop').hidden=true;
+});
+$('#roleSel').addEventListener('change',e=>{
+  state.role=e.target.value;
+  const role=ROLES[state.role];
+  if(!role.allowed.includes(state.screen))state.screen='dash';
+  render();
+  toast(`Viewing as ${role.name} — navigation now reflects ${role.title} permissions`);
+});
+$('#bellBtn').addEventListener('click',()=>go('approvals'));
+$('#hambBtn').addEventListener('click',()=>{$('#sidebar').classList.add('open');$('#navScrim').classList.add('on');});
+$('#navScrim').addEventListener('click',()=>{$('#sidebar').classList.remove('open');$('#navScrim').classList.remove('on');});
+$('#drawScrim').addEventListener('click',closeDrawer);
+$('#stripX').addEventListener('click',()=>{$('#demoStrip').hidden=true;});
+$('#aboutLink').addEventListener('click',()=>{$('#aboutModal').hidden=false;});
+$('#aboutClose').addEventListener('click',()=>{$('#aboutModal').hidden=true;});
+$('#aboutScrim').addEventListener('click',()=>{$('#aboutModal').hidden=true;});
+$('#searchIn').addEventListener('input',e=>doSearch(e.target.value.trim()));
+$('#searchIn').addEventListener('focus',e=>{if(e.target.value.trim())doSearch(e.target.value.trim());});
+document.addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#searchIn').focus();}
+  if(e.key==='Escape'){$('#sPop').hidden=true;closeDrawer();$('#aboutModal').hidden=true;}
+});
+
+render();
+</script>
