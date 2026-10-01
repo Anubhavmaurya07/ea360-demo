@@ -471,6 +471,50 @@ body{
 .avm{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 22%,transparent)}
 .sideUser .av{box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 22%,transparent)}
 
+/* ---- presentation layer ---- */
+.tourBtn{
+  display:flex;align-items:center;border-radius:10px;padding:7.5px 12px;cursor:pointer;white-space:nowrap;
+  border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));
+  background:linear-gradient(135deg,color-mix(in srgb,var(--gold) 16%,var(--surface)),var(--surface));
+  color:var(--ink2);font-weight:650;font-size:12px;
+  transition:transform .16s ease,box-shadow .2s,border-color .2s;
+}
+.tourBtn:hover{transform:translateY(-1px);border-color:var(--gold);box-shadow:0 6px 14px -8px color-mix(in srgb,var(--gold) 60%,transparent)}
+@media (max-width:1020px){.tourBtn span{display:none}}
+.modIntro{
+  display:flex;gap:9px;align-items:flex-start;margin:0 0 14px;padding:11px 14px;border-radius:12px;
+  background:linear-gradient(120deg,var(--accent-soft),transparent 85%);
+  border:1px solid color-mix(in srgb,var(--accent) 16%,var(--line));
+  font-size:12.5px;color:var(--ink2);line-height:1.5;
+}
+.modIntro svg{width:15px;height:15px;flex:0 0 15px;stroke:var(--accent);fill:none;margin-top:1.5px}
+.welcomeM{text-align:center;max-width:470px}
+.welcomeM .wMark{margin:2px auto 10px;display:block;filter:drop-shadow(0 2px 10px rgba(179,135,60,.35))}
+.welcomeM h2{font-size:25px;letter-spacing:-.2px;margin-bottom:2px}
+.wTag{color:var(--ink2);font-size:13.5px;margin:4px 0 18px;line-height:1.5}
+.wStats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}
+.wStats div{background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:11px 4px}
+.wStats b{display:block;font-size:19px;font-weight:680;color:var(--accent-2)}
+.wStats span{font-size:10px;color:var(--ink3);letter-spacing:.4px;text-transform:uppercase;font-weight:600}
+.wBtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+@media (max-width:480px){.wStats{grid-template-columns:repeat(2,1fr)}}
+#tour{position:fixed;inset:0;z-index:96;pointer-events:none}
+.tourHole{
+  position:fixed;display:none;border-radius:14px;pointer-events:none;
+  box-shadow:0 0 0 9999px rgba(5,12,10,.55),0 0 0 2px color-mix(in srgb,var(--accent) 75%,transparent),0 0 26px color-mix(in srgb,var(--accent) 35%,transparent);
+  transition:left .35s cubic-bezier(.3,.8,.3,1),top .35s cubic-bezier(.3,.8,.3,1),width .35s cubic-bezier(.3,.8,.3,1),height .35s cubic-bezier(.3,.8,.3,1);
+}
+.tourCard{
+  position:fixed;pointer-events:auto;width:min(372px,calc(100vw - 24px));
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);padding:16px 18px 14px;
+}
+.tourCard .tStep{font-size:10.5px;font-weight:700;letter-spacing:1.2px;color:var(--gold);margin-bottom:5px;text-transform:uppercase}
+.tourCard h4{margin:0 0 6px;font-size:15px;font-weight:660}
+.tourCard p{margin:0 0 13px;font-size:13px;color:var(--ink2);line-height:1.55}
+.tBtns{display:flex;gap:8px;align-items:center}
+.tBtns .linkBtn{margin-left:auto;color:var(--ink3)}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(11px)}}
 @keyframes popIn{from{opacity:0;transform:translateY(-5px) scale(.985)}}
 @keyframes scaleIn{from{opacity:0;transform:translateY(14px) scale(.965)}}
@@ -485,7 +529,8 @@ body{
     animation:fadeUp .5s cubic-bezier(.22,.8,.36,1) both;
     animation-delay:calc(var(--i,0)*45ms);
   }
-  #screen>.subtabs,#screen>.statRow{animation:fadeUp .38s cubic-bezier(.22,.8,.36,1) both}
+  #screen>.subtabs,#screen>.statRow,#screen>.modIntro{animation:fadeUp .38s cubic-bezier(.22,.8,.36,1) both}
+  .tourCard{animation:popIn .28s cubic-bezier(.22,.8,.36,1)}
   #drawer .dSec{animation:fadeUp .45s cubic-bezier(.22,.8,.36,1) both}
   #drawer .dSec:nth-of-type(2){animation-delay:60ms}
   #drawer .dSec:nth-of-type(3){animation-delay:120ms}
@@ -527,6 +572,7 @@ body{
         <span class="kbd">⌘K</span>
         <div class="sPop" id="sPop" hidden></div>
       </div>
+      <button class="tourBtn" id="tourBtn" aria-label="Start guided demo">▶<span>&nbsp;Guided demo</span></button>
       <select class="roleSel" id="roleSel" aria-label="Switch demo role">
         <option value="md">Mukesh Manshani · MD</option>
         <option value="sales">Rohit Sawant · Sales Head</option>
@@ -580,6 +626,34 @@ body{
 </div>
 
 <div id="toast" role="status"></div>
+
+<div class="modalWrap" id="welcome">
+  <div class="scrim on" style="z-index:-1"></div>
+  <div class="modal welcomeM" role="dialog" aria-label="Welcome">
+    <svg class="wMark" width="52" height="52" viewBox="0 0 36 36" aria-hidden="true">
+      <path d="M18 2 32 10v16L18 34 4 26V10Z" fill="none" stroke="url(#gld)" stroke-width="2.2"/>
+      <path d="M12.5 11.5v13M23.5 11.5v13M12.5 18h11" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round"/>
+    </svg>
+    <h2>HYBEC One</h2>
+    <p class="wTag">The unified operations platform Eric’s Designs will build for HYBEC — shown here working, with sample data.</p>
+    <div class="wStats">
+      <div><b>6</b><span>modules</span></div>
+      <div><b>35</b><span>users included</span></div>
+      <div><b>₹ 0</b><span>per-user fees</span></div>
+      <div><b>7 wks</b><span>to go-live</span></div>
+    </div>
+    <p class="mut">Sales to GST to payroll in one controlled, role-based workspace — the exact scope of quotation <span class="mono">ED-Q-0006</span>.</p>
+    <div class="wBtns">
+      <button class="btn" id="wTour">▶&nbsp; Take the 2-minute tour</button>
+      <button class="btnGhost" id="wSkip">Explore on my own</button>
+    </div>
+  </div>
+</div>
+
+<div id="tour" hidden>
+  <div class="tourHole" id="tourHole"></div>
+  <div class="tourCard" id="tourCard"></div>
+</div>
 
 <script>
 'use strict';
@@ -920,6 +994,16 @@ const NAV=[
 
 const state={screen:'dash',role:'md',tabs:{sales:'pipeline',purchase:'indents',inventory:'catalogue',accounting:'overview',hr:'people',admin:'roles'},revTable:false};
 const TITLES={dash:'Dashboard',approvals:'Approvals',sales:'Sales',purchase:'Purchase & Vendors',inventory:'Inventory & Dispatch',customers:'Customers & Credit',accounting:'Accounting & Assets',hr:'HR & Payroll',admin:'Admin & Audit'};
+const MODINTRO={
+  approvals:'Every request routes by amount and hierarchy to the right approver — and every decision is logged forever.',
+  sales:'Lead → enquiry → quotation → order → dispatch: one thread, zero re-entry, full history at every step.',
+  purchase:'Indents to purchase orders to payments, with your limits enforced — the system holds the discipline.',
+  inventory:'Live stock across yards and godowns, with blocking, barcodes, gate passes and e-way bills built in.',
+  customers:'Credit, collections and service on one record — the system chases payments so your team can sell.',
+  accounting:'Approval-driven books that stay reconciled — from voucher to balance sheet to GST return.',
+  hr:'Attendance, evaluation and payroll computed from the same data your operations already produce.',
+  admin:'You decide who sees what. The system remembers who did what.'
+};
 
 /* ---------------- screens ---------------- */
 const pendCount=()=>approvals.filter(a=>a.st==='pending').length;
@@ -962,7 +1046,7 @@ function renderDash(){
       <div ${state.revTable?'':'hidden'} class="scrollX"><table class="tbl"><thead><tr><th>Week ending</th><th class="num">Invoiced (₹ L)</th><th class="num">Collected (₹ L)</th></tr></thead><tbody>
       ${DB.weeks.map((w,i)=>`<tr><td>${w}</td><td class="num">${DB.invoiced[i].toFixed(1)}</td><td class="num">${DB.collected[i].toFixed(1)}</td></tr>`).join('')}</tbody></table></div>
     </div>
-    <div class="card">
+    <div class="card" id="attnCard">
       <div class="cardHead"><div><h3>Needs your attention</h3><p class="sub">Exceptions surfaced by workflow rules</p></div></div>
       ${attn.map(a=>`<div class="alertIt"><span class="sq" style="background:${a[0]}"></span><div><b>${a[1]}</b><div class="mut">${a[2]}</div></div></div>`).join('')}
       <div style="margin-top:10px"><button class="linkBtn" data-goto="approvals">Open approvals →</button></div>
@@ -1025,7 +1109,7 @@ function renderSales(){
     ${DB.enquiries.map(q=>`<tr><td><span class="mono">${q.no}</span> <span class="rev">R${q.rev}</span></td><td>${q.c}</td><td>${q.what}</td><td class="num">${lak(q.v)}</td><td>${chip(q.st)}</td><td>${q.o}</td></tr>`).join('')}
     </tbody></table></div><p class="emptyNote" style="padding-left:2px">Documents (drawings, site photos, rate lists) attach to every enquiry and follow it through to the order.</p></div>`;
   } else if(t==='quotes'){
-    body=`<div class="card"><div class="cardHead"><div><h3>Quotations</h3><p class="sub">Click a quotation to see its full revision history and approval trail</p></div></div>
+    body=`<div class="card" id="quoteTbl"><div class="cardHead"><div><h3>Quotations</h3><p class="sub">Click a quotation to see its full revision history and approval trail</p></div></div>
     <div class="scrollX"><table class="tbl"><thead><tr><th>Quotation</th><th>Customer</th><th class="num">Value</th><th class="num">Margin</th><th>Status</th><th>Date</th></tr></thead><tbody>
     ${DB.quotes.map((q,i)=>`<tr class="click" data-quote="${i}"><td><span class="mono">${q.no}</span> <span class="rev">R${q.rev}</span></td><td class="main-cell"><b>${q.cust}</b><span>${q.city}</span></td><td class="num">${inr(q.v)}</td><td class="num">${q.m}</td><td>${chip(q.st)}</td><td>${q.d}</td></tr>`).join('')}
     </tbody></table></div></div>`;
@@ -1306,7 +1390,8 @@ function enhance(){
 function render(){
   renderNav();
   $('#screenTitle').textContent=TITLES[state.screen];
-  $('#screen').innerHTML=SCREENS[state.screen]();
+  const mi=MODINTRO[state.screen];
+  $('#screen').innerHTML=(mi?`<div class="modIntro"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6h.01"/></svg><span>${mi}</span></div>`:'')+SCREENS[state.screen]();
   $('.main').scrollTop=0;window.scrollTo({top:0});
   wireCharts();
   enhance();
@@ -1469,6 +1554,91 @@ function wireCharts(){
   });
 }
 
+/* ---------------- guided tour ---------------- */
+const TOUR=[
+  {screen:'dash',sel:'.hero',t:'Your business at a glance',b:'Revenue, orders, collections and pending approvals — live the moment you log in. No chasing reports, no waiting for month-end.'},
+  {screen:'dash',sel:'#attnCard',t:'The system watches for you',b:'Overdue customers, pending approvals, stock below reorder — workflow rules surface exceptions automatically, before they become losses.'},
+  {screen:'dash',sel:'#roleSel',t:'Role-based access, enforced everywhere',b:'All 35 users see only what their role allows. Switch roles here anytime during the demo — the navigation and permissions change instantly.'},
+  {screen:'approvals',sel:'.apGrid .apCard',t:'One-click approvals',b:'POs above limit, special discounts, payments, leave — everything queues for the right approver. Press Approve on any card: it posts to the audit trail instantly.'},
+  {screen:'sales',tab:'quotes',sel:'#quoteTbl',t:'Quotations that remember everything',b:'Click any quotation to see every revision — R0 to R3, who changed what, which discount needed whose approval. Negotiations never get lost again.'},
+  {screen:'sales',tab:'field',sel:'.routes .route',t:'Field team, GPS-verified',b:'Daily movement reports file themselves from GPS check-ins. Visits, kilometres and cash collected — visible in real time, compiled at day end.'},
+  {screen:'inventory',tab:'stock',sel:'#screen .card',t:'Stock that protects itself',b:'A confirmed order blocks its stock immediately and auto-releases on date. Transfers between yards carry e-way bills. Nothing leaves without a gate pass.'},
+  {screen:'accounting',tab:'gst',sel:'#screen .card',t:'GST without portal re-entry',b:'e-Invoices and e-way bills generate at dispatch. GSTR-1 and 3B assemble themselves from your transactions — filing becomes a review, not a project.'},
+  {screen:'admin',tab:'log',sel:'#screen .card',t:'Everything on the record',b:'Every approval, edit and login is logged with user, time and source. The approval you made two minutes ago is already here.'},
+  {screen:'dash',sel:null,t:'Built only for HYBEC',b:'Everything you just saw is the scope of quotation ED-Q-0006 — custom-built for your processes, all 35 users included, no per-user licence, no AMC lock-in. This preview is the starting point; the delivered system follows HYBEC’s exact formats and approval hierarchy.'}
+];
+let tourI=-1,curStep=null;
+function startTour(){
+  $('#welcome').hidden=true;
+  state.role='md';state.screen='dash';
+  render();
+  tourI=-1;curStep=null;
+  $('#tour').hidden=false;
+  nextTour(1);
+}
+function endTour(){
+  tourI=-1;curStep=null;
+  $('#tour').hidden=true;
+  $('#tourHole').style.display='none';
+}
+function nextTour(dir){
+  const ni=tourI+dir;
+  if(ni<0)return;
+  if(ni>=TOUR.length){endTour();return;}
+  tourI=ni;curStep=TOUR[ni];
+  const st=curStep;
+  const needNav=state.screen!==st.screen||(st.tab&&state.tabs[st.screen]!==st.tab);
+  if(st.tab)state.tabs[st.screen]=st.tab;
+  if(needNav){state.screen=st.screen;render();}
+  fillTourCard(st);
+  const el=st.sel?document.querySelector(st.sel):null;
+  if(el)el.scrollIntoView({block:'center',behavior:MOTION()?'smooth':'auto'});
+  setTourPos();
+  const until=performance.now()+(needNav?1400:700);
+  const track=()=>{if(tourI<0||curStep!==st)return;setTourPos();if(performance.now()<until)requestAnimationFrame(track);};
+  requestAnimationFrame(track);
+  setTimeout(setTourPos,needNav?800:300);
+  setTimeout(setTourPos,1500);
+}
+function fillTourCard(st){
+  $('#tourCard').innerHTML=`<div class="tStep">Step ${tourI+1} of ${TOUR.length}</div><h4>${st.t}</h4><p>${st.b}</p>
+    <div class="tBtns">${tourI>0?'<button class="btnGhost btnSm" id="tPrev">Back</button>':''}
+    <button class="btn btnSm" id="tNext">${tourI===TOUR.length-1?'Finish':'Next'}</button>
+    <button class="linkBtn" id="tEnd">End tour</button></div>`;
+  $('#tNext').onclick=()=>nextTour(1);
+  const p=$('#tPrev');if(p)p.onclick=()=>nextTour(-1);
+  $('#tEnd').onclick=endTour;
+}
+function setTourPos(){
+  if(tourI<0||!curStep)return;
+  const card=$('#tourCard'),hole=$('#tourHole');
+  const el=curStep.sel?document.querySelector(curStep.sel):null;
+  if(!el){
+    hole.style.display='none';
+    card.style.left=Math.max(12,(innerWidth-card.offsetWidth)/2)+'px';
+    card.style.top=Math.max(12,(innerHeight-card.offsetHeight)/2)+'px';
+    return;
+  }
+  const r=el.getBoundingClientRect();
+  hole.style.display='block';
+  hole.style.left=(r.left-8)+'px';hole.style.top=(r.top-8)+'px';
+  hole.style.width=(r.width+16)+'px';hole.style.height=(r.height+16)+'px';
+  const ch=card.offsetHeight,cw=card.offsetWidth;
+  let top=r.bottom+16;
+  if(top+ch>innerHeight-10)top=Math.max(10,r.top-ch-16);
+  const left=Math.min(Math.max(12,r.left),Math.max(12,innerWidth-cw-12));
+  card.style.left=left+'px';card.style.top=top+'px';
+}
+let tourRaf=0;
+['scroll','resize'].forEach(ev=>window.addEventListener(ev,()=>{
+  if(tourI<0)return;
+  cancelAnimationFrame(tourRaf);
+  tourRaf=requestAnimationFrame(setTourPos);
+},{passive:true}));
+$('#tourBtn').addEventListener('click',startTour);
+$('#wTour').addEventListener('click',startTour);
+$('#wSkip').addEventListener('click',()=>{$('#welcome').hidden=true;});
+
 /* ---------------- events ---------------- */
 document.addEventListener('click',e=>{
   const nav=e.target.closest('[data-nav]');
@@ -1516,7 +1686,11 @@ $('#searchIn').addEventListener('input',e=>doSearch(e.target.value.trim()));
 $('#searchIn').addEventListener('focus',e=>{if(e.target.value.trim())doSearch(e.target.value.trim());});
 document.addEventListener('keydown',e=>{
   if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#searchIn').focus();}
-  if(e.key==='Escape'){$('#sPop').hidden=true;closeDrawer();$('#aboutModal').hidden=true;}
+  if(e.key==='Escape'){$('#sPop').hidden=true;closeDrawer();$('#aboutModal').hidden=true;$('#welcome').hidden=true;endTour();}
+  if(tourI>=0&&!e.metaKey&&!e.ctrlKey){
+    if(e.key==='ArrowRight'){e.preventDefault();nextTour(1);}
+    if(e.key==='ArrowLeft'){e.preventDefault();nextTour(-1);}
+  }
 });
 
 render();
