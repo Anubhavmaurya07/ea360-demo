@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Vantage One</title>
+<title>Hexora</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 [hidden]{display:none!important}
@@ -384,6 +384,16 @@ body{
 #sidebar{background:linear-gradient(180deg,var(--side) 0%,color-mix(in srgb,var(--side) 84%,#000 16%) 100%)}
 #sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border:3px solid transparent;background-clip:content-box}
 .brand .mark{filter:drop-shadow(0 2px 8px rgba(179,135,60,.35))}
+.brand b{
+  background:linear-gradient(100deg,#f6e9cb 10%,#d9ab5c 85%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  letter-spacing:.5px;font-size:17.5px;
+}
+.welcomeM h2{
+  background:linear-gradient(100deg,var(--accent-2) 15%,var(--gold) 90%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  letter-spacing:.3px;
+}
 .nitem{transition:background-color .18s,color .18s,transform .18s ease}
 .nitem:hover{transform:translateX(2px)}
 .nitem.active{
@@ -553,9 +563,9 @@ body{
           <stop offset="0" stop-color="#d8b26a"/><stop offset="1" stop-color="#9a7228"/>
         </linearGradient></defs>
         <path d="M18 2 32 10v16L18 34 4 26V10Z" fill="none" stroke="url(#gld)" stroke-width="2.2"/>
-        <path d="M12 11.5 L18 25 L24 11.5" fill="none" stroke="#e9f5f1" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12.5 11.5v13M23.5 11.5v13M12.5 18h11" fill="none" stroke="#e9f5f1" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <div><b>Vantage One</b><span>Unified Operations Platform</span></div>
+      <div><b>Hexora</b><span>Unified Operations Platform</span></div>
     </div>
     <nav id="nav"></nav>
     <div class="sideUser" id="sideUser"></div>
@@ -565,7 +575,7 @@ body{
   <div class="main">
     <header class="topbar">
       <button class="hamb" id="hambBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
-      <div class="crumb"><small>Vantage One</small><h1 id="screenTitle">Dashboard</h1></div>
+      <div class="crumb"><small>Hexora</small><h1 id="screenTitle">Dashboard</h1></div>
       <div class="tSearch">
         <svg class="sIco" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
         <input id="searchIn" type="search" placeholder="Search orders, SKUs, customers…" autocomplete="off" aria-label="Global search">
@@ -594,7 +604,7 @@ body{
     <main id="screen" aria-live="polite"></main>
 
     <footer class="foot">
-      <span><b>Vantage One</b> · concept preview accompanying quotation ED-Q-0006 · the delivered system is configured to your approved processes, formats and approval hierarchy.</span>
+      <span><b>Hexora</b> · concept preview accompanying quotation ED-Q-0006 · the delivered system is configured to your approved processes, formats and approval hierarchy.</span>
       <span class="ed">Eric’s Designs — Innovation through every pixel</span>
     </footer>
   </div>
@@ -632,9 +642,9 @@ body{
   <div class="modal welcomeM" role="dialog" aria-label="Welcome">
     <svg class="wMark" width="52" height="52" viewBox="0 0 36 36" aria-hidden="true">
       <path d="M18 2 32 10v16L18 34 4 26V10Z" fill="none" stroke="url(#gld)" stroke-width="2.2"/>
-      <path d="M12 11.5 L18 25 L24 11.5" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12.5 11.5v13M23.5 11.5v13M12.5 18h11" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <h2>Vantage One</h2>
+    <h2>Hexora</h2>
     <p class="wTag">The unified operations platform Eric’s Designs will build for your business — shown here working, with sample data.</p>
     <div class="wStats">
       <div><b>6</b><span>modules</span></div>
