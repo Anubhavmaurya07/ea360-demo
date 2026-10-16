@@ -525,6 +525,31 @@ body{
 .tBtns{display:flex;gap:8px;align-items:center}
 .tBtns .linkBtn{margin-left:auto;color:var(--ink3)}
 
+/* ---- phone mockups ---- */
+.phoneRow{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;align-items:flex-start;margin:4px 0 18px}
+.phoneWrap{display:flex;flex-direction:column;align-items:center;gap:11px}
+.phone{
+  width:238px;height:478px;border-radius:34px;border:7px solid #15211e;background:var(--bg);
+  overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 3px 6px rgba(8,18,16,.08),0 30px 56px -28px rgba(8,18,16,.45);
+}
+.pBar{display:flex;justify-content:space-between;font-size:9px;color:var(--ink3);padding:8px 14px 2px;font-variant-numeric:tabular-nums}
+.pHead{padding:5px 13px 9px;font-size:13px;font-weight:650;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pHead small{font-size:9.5px;color:var(--ink3);font-weight:500;display:block;margin-top:1px}
+.pBody{flex:1;overflow:hidden;padding:0 10px;display:flex;flex-direction:column;gap:8px}
+.pCard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:9px 11px;font-size:10.5px;line-height:1.45}
+.pCard b{font-size:11px}
+.pCard .m{color:var(--ink3);font-size:9.5px;margin-top:1px}
+.pBtn{display:inline-block;background:var(--accent);color:var(--accent-on);font-size:9.5px;font-weight:700;border-radius:8px;padding:4px 11px;margin-top:6px}
+.pBtn.ghost{background:var(--surface2);color:var(--ink2);border:1px solid var(--line)}
+.pChipOk{display:inline-block;font-size:8.5px;font-weight:700;color:var(--ok-ink);background:var(--ok-t);border-radius:99px;padding:1px 7px;vertical-align:1px}
+.pChipW{display:inline-block;font-size:8.5px;font-weight:700;color:var(--warn-ink);background:var(--warn-t);border-radius:99px;padding:1px 7px;vertical-align:1px}
+.pVal{font-size:21px;font-weight:680;letter-spacing:-.2px;margin:1px 0}
+.pTabs{margin-top:auto;display:flex;justify-content:space-around;border-top:1px solid var(--line);padding:8px 0 11px;background:var(--surface)}
+.pTabs span{font-size:8.5px;color:var(--ink3);font-weight:600}
+.pTabs span.on{color:var(--accent);font-weight:800}
+.pLbl{font-size:12.5px;font-weight:650;color:var(--ink2)}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(11px)}}
 @keyframes popIn{from{opacity:0;transform:translateY(-5px) scale(.985)}}
 @keyframes scaleIn{from{opacity:0;transform:translateY(14px) scale(.965)}}
@@ -535,7 +560,7 @@ body{
 @keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--bad) 55%,transparent)}100%{box-shadow:0 0 0 10px transparent}}
 
 @media (prefers-reduced-motion: no-preference){
-  #screen .card,#screen .apCard,#screen .vCard,#screen .route{
+  #screen .card,#screen .apCard,#screen .vCard,#screen .route,#screen .phoneWrap{
     animation:fadeUp .5s cubic-bezier(.22,.8,.36,1) both;
     animation-delay:calc(var(--i,0)*45ms);
   }
@@ -983,14 +1008,15 @@ let log=[
   {t:'18 Sep · 10:31',u:'System',a:'payment-due alert generated — Om Sai Timber Mart crossed 90 days, credit hold applied',mod:'Customers',ip:'—'}];
 
 const ROLES={
-  md:{name:'Vikram Malhotra',title:'Managing Director',init:'VM',allowed:['dash','approvals','sales','purchase','inventory','customers','accounting','hr','admin']},
-  sales:{name:'Rohit Sawant',title:'Sales Head',init:'RS',allowed:['dash','approvals','sales','customers','inventory']},
-  accounts:{name:'Neha Kulkarni',title:'Accounts Manager',init:'NK',allowed:['dash','approvals','customers','accounting']}
+  md:{name:'Vikram Malhotra',title:'Managing Director',init:'VM',allowed:['dash','approvals','mobile','sales','purchase','inventory','customers','accounting','hr','admin']},
+  sales:{name:'Rohit Sawant',title:'Sales Head',init:'RS',allowed:['dash','approvals','mobile','sales','customers','inventory']},
+  accounts:{name:'Neha Kulkarni',title:'Accounts Manager',init:'NK',allowed:['dash','approvals','mobile','customers','accounting']}
 };
 const NAV=[
   {g:'Overview',items:[
     {id:'dash',l:'Dashboard',ic:'<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>'},
-    {id:'approvals',l:'Approvals',badge:1,ic:'<circle cx="12" cy="12" r="8.5"/><path d="m8.5 12.2 2.4 2.4 4.6-4.9"/>'}]},
+    {id:'approvals',l:'Approvals',badge:1,ic:'<circle cx="12" cy="12" r="8.5"/><path d="m8.5 12.2 2.4 2.4 4.6-4.9"/>'},
+    {id:'mobile',l:'Mobile App',ic:'<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>'}]},
   {g:'Operations',items:[
     {id:'sales',l:'Sales',ic:'<path d="M4 19.5V16m5.3 3.5v-7M14.7 19.5v-4M20 19.5V8.5"/><path d="m4.5 11 4.8-4.2 4 2.8L19.5 4"/>'},
     {id:'purchase',l:'Purchase',ic:'<path d="M5 7h15l-1.6 8.2a2 2 0 0 1-2 1.6H8.7a2 2 0 0 1-2-1.6L5 4.5H3"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="16.5" cy="20" r="1.4"/>'},
@@ -1003,9 +1029,10 @@ const NAV=[
     {id:'admin',l:'Admin & Audit',ic:'<path d="M12 3.5 19.5 6v5.2c0 4.6-3.1 8-7.5 9.3-4.4-1.3-7.5-4.7-7.5-9.3V6Z"/><path d="m9 11.8 2.2 2.2 3.8-4"/>'}]}];
 
 const state={screen:'dash',role:'md',tabs:{sales:'pipeline',purchase:'indents',inventory:'catalogue',accounting:'overview',hr:'people',admin:'roles'},revTable:false};
-const TITLES={dash:'Dashboard',approvals:'Approvals',sales:'Sales',purchase:'Purchase & Vendors',inventory:'Inventory & Dispatch',customers:'Customers & Credit',accounting:'Accounting & Assets',hr:'HR & Payroll',admin:'Admin & Audit'};
+const TITLES={dash:'Dashboard',approvals:'Approvals',mobile:'Mobile App',sales:'Sales',purchase:'Purchase & Vendors',inventory:'Inventory & Dispatch',customers:'Customers & Credit',accounting:'Accounting & Assets',hr:'HR & Payroll',admin:'Admin & Audit'};
 const MODINTRO={
   approvals:'Every request routes by amount and hierarchy to the right approver — and every decision is logged forever.',
+  mobile:'One platform, every device — the phone app is the same system, the same logins, the same permissions.',
   sales:'Lead → enquiry → quotation → order → dispatch: one thread, zero re-entry, full history at every step.',
   purchase:'Indents to purchase orders to payments, with your limits enforced — the system holds the discipline.',
   inventory:'Live stock across yards and godowns, with blocking, barcodes, gate passes and e-way bills built in.',
@@ -1341,7 +1368,46 @@ function renderAdmin(){
   return subtabs('admin',[['roles','Roles & permissions'],['users','Users'],['templates','Email templates'],['log','Activity log']])+body;
 }
 
-const SCREENS={dash:renderDash,approvals:renderApprovals,sales:renderSales,purchase:renderPurchase,inventory:renderInventory,customers:renderCustomers,accounting:renderAccounting,hr:renderHR,admin:renderAdmin};
+function renderMobile(){
+  const ph=(label,inner)=>`<div class="phoneWrap"><div class="phone">${inner}</div><div class="pLbl">${label}</div></div>`;
+  const bar=`<div class="pBar"><span>09:41</span><span>5G · ▮▮▮▯</span></div>`;
+  const pA=bar+`<div class="pHead"><div>Today’s route<small>Rohit Sawant · Pune territory</small></div><span class="avm" style="width:24px;height:24px;font-size:9px;flex:0 0 24px">RS</span></div>
+    <div class="pBody">
+      <div class="pCard"><b>09:12 · Shree Balaji Traders</b> <span class="pChipOk">GPS ✓</span><div class="m">₹ 80,000 collected · receipt auto-posted</div></div>
+      <div class="pCard"><b>11:40 · Paramount Estates site</b> <span class="pChipOk">GPS ✓</span><div class="m">Ghana teak 4×3 samples handed over</div></div>
+      <div class="pCard"><b>14:05 · Om Sai Timber Mart</b> <span class="pChipW">Scheduled</span><div class="m">Revised offer discussion</div><span class="pBtn">Check in · GPS</span> <span class="pBtn ghost">Reschedule</span></div>
+      <div class="pCard"><b>Travel claim · TC-0912</b><div class="m">Pune territory · 3 days · ₹ 12,480</div><span class="pBtn ghost">Attach bills</span></div>
+    </div>
+    <div class="pTabs"><span class="on">Route</span><span>Leads</span><span>Claims</span><span>Profile</span></div>`;
+  const pB=bar+`<div class="pHead"><div>Approvals<small>Vikram Malhotra · Managing Director</small></div><span style="background:var(--bad);color:#fff;font-size:9.5px;font-weight:700;border-radius:99px;padding:1px 8px">6</span></div>
+    <div class="pBody">
+      <div class="pCard"><b>PO-26-0231 · Gujarat Timber</b><div class="m">Sal logs 290 CFT · raised by Prakash Iyer</div><div style="font-size:13.5px;font-weight:680;margin-top:2px">₹ 4,86,500</div><span class="pBtn">Approve</span> <span class="pBtn ghost">Reject</span></div>
+      <div class="pCard"><b>QTN-26-0148 · discount 8.5%</b> <span class="pChipW">Above floor</span><div class="m">Navkar Infra Projects · requested by Rohit</div><span class="pBtn">Approve</span> <span class="pBtn ghost">Reject</span></div>
+      <div class="pCard"><b>PV-0871 · payment release</b><div class="m">Shakti Packaging · ₹ 2,10,000 · due 22 Sep</div></div>
+    </div>
+    <div class="pTabs"><span>Home</span><span class="on">Approvals</span><span>Reports</span><span>Alerts</span></div>`;
+  const pC=bar+`<div class="pHead"><div>Business today<small>21 Sep · live</small></div></div>
+    <div class="pBody">
+      <div class="pCard"><div class="m">Revenue — September MTD</div><div class="pVal">₹ 72.4 L</div><span class="delta up" style="font-size:10px">▲ 18.2% vs Aug</span>${spark(DB.invoiced,'var(--c1)',182,30)}</div>
+      <div class="pCard"><div class="m">Collections overdue</div><b style="font-size:14px">₹ 23.6 L</b><div class="m">4 customers · 1 on credit hold</div></div>
+      <div class="pCard"><div class="m">Dispatches today</div><b style="font-size:14px">3 vehicles · 550 CFT</b><div class="m">1 gate pass pending approval</div></div>
+    </div>
+    <div class="pTabs"><span class="on">Home</span><span>Sales</span><span>Stock</span><span>More</span></div>`;
+  return statRow([['Runs on','any Android / iPhone'],['Install','browser or home-screen app'],['Device licences','none'],['Weak network','entries queue & sync']])+
+  `<div class="phoneRow">${ph('Field app — DMR & collections',pA)}${ph('Approvals on the go',pB)}${ph('Owner’s pocket dashboard',pC)}</div>
+  <div class="card"><div class="cardHead"><div><h3>One system, every device</h3><p class="sub">The phone experience is the same platform with the same logins and permissions — not a separate product to buy or sync</p></div></div>
+  <div class="row r-two" style="margin:0">
+    <div>
+      <div class="alertIt"><span class="sq" style="background:var(--accent)"></span><div><b>No app-store friction.</b> <span style="font-size:12.5px">Opens in the phone browser and installs to the home screen — nothing to download or update per device.</span></div></div>
+      <div class="alertIt"><span class="sq" style="background:var(--accent)"></span><div><b>GPS where it matters.</b> <span style="font-size:12.5px">Check-ins are location-stamped and the day’s movement report compiles itself by evening.</span></div></div>
+    </div>
+    <div>
+      <div class="alertIt"><span class="sq" style="background:var(--accent)"></span><div><b>Approvals never wait.</b> <span style="font-size:12.5px">POs, discounts and payments clear from anywhere — logged to the same audit trail.</span></div></div>
+      <div class="alertIt"><span class="sq" style="background:var(--accent)"></span><div><b>Proof in your hand.</b> <span style="font-size:12.5px">Open this demo link on a phone — the interface you are using adapts to the phone screen already.</span></div></div>
+    </div>
+  </div></div>`;
+}
+const SCREENS={dash:renderDash,approvals:renderApprovals,mobile:renderMobile,sales:renderSales,purchase:renderPurchase,inventory:renderInventory,customers:renderCustomers,accounting:renderAccounting,hr:renderHR,admin:renderAdmin};
 /* ---------------- render engine ---------------- */
 function renderNav(){
   const role=ROLES[state.role];
@@ -1393,7 +1459,7 @@ function drawLines(root){
 }
 function enhance(){
   if(!MOTION())return;
-  document.querySelectorAll('#screen .card,#screen .apCard,#screen .vCard,#screen .route').forEach((el,i)=>el.style.setProperty('--i',Math.min(i,12)));
+  document.querySelectorAll('#screen .card,#screen .apCard,#screen .vCard,#screen .route,#screen .phoneWrap').forEach((el,i)=>el.style.setProperty('--i',Math.min(i,12)));
   countUps();
   drawLines(document.getElementById('screen'));
 }
@@ -1503,6 +1569,7 @@ const INDEX=[
   ...DB.assets.map(a=>({t:a.code+' · '+a.a,s:'Asset',go:['accounting','assets']})),
   ...DB.enquiries.map(e=>({t:e.no+' · '+e.c,s:'Enquiry',go:['sales','enquiries']})),
   ...DB.tickets.map(k=>({t:k.no+' · '+k.c,s:'Support ticket',go:['customers']})),
+  {t:'Mobile app — field, approvals, owner dashboard',s:'Showcase',go:['mobile']},
   {t:'GST & compliance — returns, e-invoices',s:'Accounting',go:['accounting','gst']},
   {t:'Email templates',s:'Admin',go:['admin','templates']},
   {t:'Stock transfers & blocking',s:'Inventory',go:['inventory','stock']},
@@ -1572,6 +1639,7 @@ const TOUR=[
   {screen:'approvals',sel:'.apGrid .apCard',t:'One-click approvals',b:'POs above limit, special discounts, payments, leave — everything queues for the right approver. Press Approve on any card: it posts to the audit trail instantly.'},
   {screen:'sales',tab:'quotes',sel:'#quoteTbl',t:'Quotations that remember everything',b:'Click any quotation to see every revision — R0 to R3, who changed what, which discount needed whose approval. Negotiations never get lost again.'},
   {screen:'sales',tab:'field',sel:'.routes .route',t:'Field team, GPS-verified',b:'Daily movement reports file themselves from GPS check-ins. Visits, kilometres and cash collected — visible in real time, compiled at day end.'},
+  {screen:'mobile',sel:'.phoneRow',t:'The same platform in their pocket',b:'Field staff run their day from the phone — GPS check-ins, collections, claims — while owners approve and track from theirs. A browser link or home-screen app; no app store, no per-device licences.'},
   {screen:'inventory',tab:'stock',sel:'#screen .card',t:'Stock that protects itself',b:'A confirmed order blocks its stock immediately and auto-releases on date. Transfers between yards carry e-way bills. Nothing leaves without a gate pass.'},
   {screen:'accounting',tab:'gst',sel:'#screen .card',t:'GST without portal re-entry',b:'e-Invoices and e-way bills generate at dispatch. GSTR-1 and 3B assemble themselves from your transactions — filing becomes a review, not a project.'},
   {screen:'admin',tab:'log',sel:'#screen .card',t:'Everything on the record',b:'Every approval, edit and login is logged with user, time and source. The approval you made two minutes ago is already here.'},
