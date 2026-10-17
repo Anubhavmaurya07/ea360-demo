@@ -657,6 +657,7 @@ body{
   <div class="tourCard" id="tourCard"></div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
 'use strict';
 /* ---------------- helpers ---------------- */
@@ -1361,7 +1362,15 @@ function renderMobile(){
     </div>
     <div class="pTabs"><span class="on">Home</span><span>Sales</span><span>Stock</span><span>More</span></div>`;
   return statRow([['Runs on','any Android / iPhone'],['Install','browser or home-screen app'],['Device licences','none'],['Weak network','entries queue & sync']])+
-  `<div class="phoneRow">${ph('Field app — DMR & collections',pA)}${ph('Approvals on the go',pB)}${ph('Owner’s pocket dashboard',pC)}</div>
+  `<div class="card" style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-bottom:16px">
+    <div id="qrBox" hidden style="flex:0 0 118px;width:118px;height:118px;background:#fff;border-radius:12px;padding:9px"></div>
+    <div style="flex:1;min-width:230px">
+      <h3 style="margin:0 0 4px;font-size:15px">Hold the app in your hand — right now</h3>
+      <p class="sub" style="margin:0 0 11px">Scan the code with any phone camera, or open the link. Add it to the home screen and EA 360 launches full-screen with its own icon — check-ins, collections and approvals included.</p>
+      <a class="btn" href="app.html" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">▶&nbsp; Open the live app</a>
+    </div>
+  </div>
+  <div class="phoneRow">${ph('Field app — DMR & collections',pA)}${ph('Approvals on the go',pB)}${ph('Owner’s pocket dashboard',pC)}</div>
   <div class="card"><div class="cardHead"><div><h3>One system, every device</h3><p class="sub">The phone experience is the same platform with the same logins and permissions — not a separate product to buy or sync</p></div></div>
   <div class="row r-two" style="margin:0">
     <div>
@@ -1370,7 +1379,7 @@ function renderMobile(){
     </div>
     <div>
       <div class="alertIt"><span class="sq" style="background:var(--accent)"></span><div><b>Approvals never wait.</b> <span style="font-size:12.5px">POs, discounts and payments clear from anywhere — logged to the same audit trail.</span></div></div>
-      <div class="alertIt"><span class="sq" style="background:var(--accent)"></span><div><b>Proof in your hand.</b> <span style="font-size:12.5px">Open this demo link on a phone — the interface you are using adapts to the phone screen already.</span></div></div>
+      <div class="alertIt"><span class="sq" style="background:var(--accent)"></span><div><b>Try it live.</b> <span style="font-size:12.5px">Scan the code above — the working app opens on your phone in seconds, no installation needed.</span></div></div>
     </div>
   </div></div>`;
 }
@@ -1430,6 +1439,17 @@ function enhance(){
   countUps();
   drawLines(document.getElementById('screen'));
 }
+function fillQR(){
+  const b=$('#qrBox');
+  if(!b||typeof qrcode==='undefined')return;
+  try{
+    const q=qrcode(0,'M');
+    q.addData('https://anubhavmaurya07.github.io/ea360-demo/app.html');
+    q.make();
+    b.innerHTML=q.createSvgTag({cellSize:4,margin:0,scalable:true}).replace('<svg ','<svg style="width:100%;height:100%;display:block" ');
+    b.hidden=false;
+  }catch(e){}
+}
 function render(){
   renderNav();
   $('#screenTitle').textContent=TITLES[state.screen];
@@ -1438,6 +1458,7 @@ function render(){
   $('.main').scrollTop=0;window.scrollTo({top:0});
   wireCharts();
   enhance();
+  if(state.screen==='mobile')fillQR();
 }
 function go(screen,tab){
   const role=ROLES[state.role];
