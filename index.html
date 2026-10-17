@@ -130,15 +130,6 @@ nav{padding:4px 12px 12px;flex:1}
 .iconBtn svg{width:17px;height:17px;stroke:var(--ink2);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .iconBtn .dot{position:absolute;top:-5px;right:-5px;background:var(--bad);color:#fff;font-size:10px;font-weight:700;border-radius:999px;min-width:17px;height:17px;display:grid;place-items:center;padding:0 4px}
 
-.demoStrip{
-  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
-  padding:7px clamp(16px,2.4vw,26px);font-size:12px;color:var(--ink2);
-  background:var(--gold-soft);border-bottom:1px solid var(--line);
-}
-.demoStrip b{color:var(--ink)}
-.demoStrip .pill{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:1px 9px;font-weight:600;font-size:11px;color:var(--gold)}
-.demoStrip a{color:var(--accent);font-weight:600;cursor:pointer;text-decoration:none}
-.demoStrip .x{margin-left:auto;border:0;background:none;cursor:pointer;color:var(--ink3);font-size:15px;line-height:1;padding:2px 6px}
 
 #screen{flex:1;padding:clamp(16px,2.4vw,26px);max-width:1460px;width:100%;margin:0 auto}
 .foot{
@@ -619,17 +610,11 @@ body{
       </button>
     </header>
 
-    <div class="demoStrip" id="demoStrip">
-      <span class="pill">Preview build</span>
-      <span>A working product preview by <b>Eric’s Designs</b> · Quotation <span class="mono">ED-Q-0006</span> · all records are sample data</span>
-      <a id="aboutLink">About this preview</a>
-      <button class="x" id="stripX" aria-label="Dismiss">×</button>
-    </div>
 
     <main id="screen" aria-live="polite"></main>
 
     <footer class="foot">
-      <span><b>EA 360</b> · concept preview accompanying quotation ED-Q-0006 · the delivered system is configured to your approved processes, formats and approval hierarchy.</span>
+      <span><b>EA 360</b> — Unified Operations Platform · configured to your processes, formats and approval hierarchy.</span>
       <span class="ed">Eric’s Designs — Innovation through every pixel</span>
     </footer>
   </div>
@@ -641,24 +626,6 @@ body{
 </aside>
 <div class="scrim" id="drawScrim"></div>
 
-<div class="modalWrap" id="aboutModal" hidden>
-  <div class="scrim on" style="z-index:-1" id="aboutScrim"></div>
-  <div class="modal" role="dialog" aria-label="About this preview">
-    <h2>About this preview</h2>
-    <p class="mut">A working visual preview of the platform proposed under quotation <span class="mono">ED-Q-0006</span> (20&nbsp;Sep&nbsp;2026). Every module in the approved scope is represented here with sample data:</p>
-    <ul>
-      <li><span class="tick">✓</span><span><b>Sales process automation</b> — leads with scheduled follow-ups (Google Calendar sync), templated enquiries, quotations with revision history, orders, DMR field tracking with GPS, travel claims.</span></li>
-      <li><span class="tick">✓</span><span><b>Purchase &amp; vendors</b> — indents, vendor allocation, purchase orders, debit notes, vendor advance wallets.</span></li>
-      <li><span class="tick">✓</span><span><b>Stock, warehouse &amp; dispatch</b> — species/size/grade SKUs, multi-level pricing, stock blocking with auto-release, transfers between yards, consignment stock, barcodes, gate passes, transport &amp; e-way bills.</span></li>
-      <li><span class="tick">✓</span><span><b>Customers</b> — credit control, aging, collection automation, advance wallets and support ticketing.</span></li>
-      <li><span class="tick">✓</span><span><b>Accounting, GST &amp; assets</b> — approval-driven vouchers, day book, cashflow planner, tax profiles &amp; extra charges (cutting/planing), GST returns auto-prepared with e-invoice and e-way bill, barcoded asset register.</span></li>
-      <li><span class="tick">✓</span><span><b>HR, payroll &amp; administration</b> — attendance, leave, performance evaluation sheets, payroll runs, email templates with dynamic fields &amp; digital signatures, multi-level roles and full activity logging.</span></li>
-    </ul>
-    <p class="mut">The platform is custom-built around your processes and delivered as your own — all 35 users included, with <b>no per-user licence fee and no recurring licence/AMC lock-in</b>.</p>
-    <p class="mut">Try it: switch the role at the top right to see permission-based access change live, open <b>Approvals</b> and action a request, or click a quotation to see its revision trail.</p>
-    <div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="btn" id="aboutClose">Back to the demo</button></div>
-  </div>
-</div>
 
 <div id="toast" role="status"></div>
 
@@ -670,14 +637,14 @@ body{
       <text x="18" y="22" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing=".4" fill="var(--accent)" font-family="Instrument Sans,system-ui,sans-serif">EA</text>
     </svg>
     <h2>EA 360</h2>
-    <p class="wTag">The unified operations platform Eric’s Designs will build for your business — shown here working, with sample data.</p>
+    <p class="wTag">The unified operations platform Eric’s Designs will build for your business — live, end to end.</p>
     <div class="wStats">
       <div><b>6</b><span>modules</span></div>
       <div><b>35</b><span>users included</span></div>
       <div><b>₹ 0</b><span>per-user fees</span></div>
       <div><b>7 wks</b><span>to go-live</span></div>
     </div>
-    <p class="mut">Sales to GST to payroll in one controlled, role-based workspace — the exact scope of quotation <span class="mono">ED-Q-0006</span>.</p>
+    <p class="mut">Sales to GST to payroll in one controlled, role-based workspace.</p>
     <div class="wBtns">
       <button class="btn" id="wTour">▶&nbsp; Take the 2-minute tour</button>
       <button class="btnGhost" id="wSkip">Explore on my own</button>
@@ -1583,7 +1550,7 @@ function doSearch(qs){
   if(!qs){pop.hidden=true;return;}
   const q=qs.toLowerCase();
   const hits=INDEX.filter(x=>x.t.toLowerCase().includes(q)||x.s.toLowerCase().includes(q)).slice(0,8);
-  pop.innerHTML=hits.length?hits.map((h,i)=>`<button data-sr="${INDEX.indexOf(h)}"><span class="sr-t">${esc(h.t)}</span><span class="sr-s">${h.s}</span></button>`).join(''):`<button disabled style="color:var(--ink3)">No matches in sample data</button>`;
+  pop.innerHTML=hits.length?hits.map((h,i)=>`<button data-sr="${INDEX.indexOf(h)}"><span class="sr-t">${esc(h.t)}</span><span class="sr-s">${h.s}</span></button>`).join(''):`<button disabled style="color:var(--ink3)">No matches found</button>`;
   pop.hidden=false;
 }
 
@@ -1643,7 +1610,7 @@ const TOUR=[
   {screen:'inventory',tab:'stock',sel:'#screen .card',t:'Stock that protects itself',b:'A confirmed order blocks its stock immediately and auto-releases on date. Transfers between yards carry e-way bills. Nothing leaves without a gate pass.'},
   {screen:'accounting',tab:'gst',sel:'#screen .card',t:'GST without portal re-entry',b:'e-Invoices and e-way bills generate at dispatch. GSTR-1 and 3B assemble themselves from your transactions — filing becomes a review, not a project.'},
   {screen:'admin',tab:'log',sel:'#screen .card',t:'Everything on the record',b:'Every approval, edit and login is logged with user, time and source. The approval you made two minutes ago is already here.'},
-  {screen:'dash',sel:null,t:'Built around your business',b:'Everything you just saw is the scope of quotation ED-Q-0006 — custom-built for your processes, all 35 users included, no per-user licence, no AMC lock-in. This preview is the starting point; the delivered system follows your exact formats and approval hierarchy.'}
+  {screen:'dash',sel:null,t:'Built around your business',b:'Custom-built for your processes — all 35 users included, no per-user licence, no AMC lock-in. The delivered system follows your exact formats and approval hierarchy.'}
 ];
 let tourI=-1,curStep=null;
 function startTour(){
@@ -1756,15 +1723,11 @@ $('#bellBtn').addEventListener('click',()=>go('approvals'));
 $('#hambBtn').addEventListener('click',()=>{$('#sidebar').classList.add('open');$('#navScrim').classList.add('on');});
 $('#navScrim').addEventListener('click',()=>{$('#sidebar').classList.remove('open');$('#navScrim').classList.remove('on');});
 $('#drawScrim').addEventListener('click',closeDrawer);
-$('#stripX').addEventListener('click',()=>{$('#demoStrip').hidden=true;});
-$('#aboutLink').addEventListener('click',()=>{$('#aboutModal').hidden=false;});
-$('#aboutClose').addEventListener('click',()=>{$('#aboutModal').hidden=true;});
-$('#aboutScrim').addEventListener('click',()=>{$('#aboutModal').hidden=true;});
 $('#searchIn').addEventListener('input',e=>doSearch(e.target.value.trim()));
 $('#searchIn').addEventListener('focus',e=>{if(e.target.value.trim())doSearch(e.target.value.trim());});
 document.addEventListener('keydown',e=>{
   if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#searchIn').focus();}
-  if(e.key==='Escape'){$('#sPop').hidden=true;closeDrawer();$('#aboutModal').hidden=true;$('#welcome').hidden=true;endTour();}
+  if(e.key==='Escape'){$('#sPop').hidden=true;closeDrawer();$('#welcome').hidden=true;endTour();}
   if(tourI>=0&&!e.metaKey&&!e.ctrlKey){
     if(e.key==='ArrowRight'){e.preventDefault();nextTour(1);}
     if(e.key==='ArrowLeft'){e.preventDefault();nextTour(-1);}
